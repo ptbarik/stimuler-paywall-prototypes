@@ -38,9 +38,11 @@ body{background:#08070f;font-family:var(--id);color:#fff;
 /* ── the two palettes ───────────────────────────────────────────────
    Sampled pixel-for-pixel off a 1:1 render of each frame in the export. */
 .frame[data-tier="pro"]{
-  --page:#0F0D25;
+  --page:#16122A;            /* the gradient's top stop; status bar + base */
+  --page-grad:linear-gradient(180deg,#16122A 0%,#120F22 60.1%,#0D0B16 100%);
+  --seg-fg:#171436;          /* the label punched in the thumb */
   --glow:#3B368C;
-  --accent:#8AA5FF;          /* the caption's accent line */
+  --accent:#877EFF;          /* the caption's accent line */
   --num:#5C81FA;             /* 12Mn+ / 4.8 */
   --key:#6F91FF;             /* the tier's structural blue */
   --key-rgb:111,145,255;
@@ -51,13 +53,13 @@ body{background:#08070f;font-family:var(--id);color:#fff;
   --dash-on:#6F91FF; --dash-off:#AABEFF;
   --close-bg:#151233; --close-bd:#8F8F8F; --close-fg:#8F8F8F;
   --seg-well:rgba(15,13,37,.45); --seg-bd:rgba(255,255,255,.30);
-  --thumb:linear-gradient(90deg,#5B7EF0,#9CB4FF 50%,#5B7EF0);
+  --thumb:linear-gradient(87.44deg,#382EA5 -13.09%,#9991FF 53.31%,#382EA5 119.7%);
   --thumb-fg:#fff;
   --badge:linear-gradient(90deg,#5B7EF0,#6F91FF 50%,#5B7EF0); --badge-fg:#fff;
   --planA-edge:linear-gradient(105deg,#4870F3,#6F91FF 50%,#4870F3);
   --planA-glow:rgba(103,137,249,.28);
-  --cta:linear-gradient(90.04deg,#4248E1,#7B8FFF 50.022%,#4248E1); --cta-fg:#fff; --cta-sub:#fff;
-  --tpill-a:linear-gradient(120deg,#5B7EF0,#9CB4FF 50%,#5B7EF0); --tpill-a-fg:#fff;
+  --cta:linear-gradient(90.01deg,#4236C6 0.05%,#6F64FF 50.02%,#4236C6 100%); --cta-fg:#fff; --cta-sub:#fff;
+  --tpill-a:linear-gradient(120deg,#675FD1,#9991FF 50%,#675FD1); --tpill-a-fg:#fff;
   --tpill-b:linear-gradient(120deg,#DBA936,#FFEB6A); --tpill-b-fg:#0A091A;
   --award-l:#6F91FF; --award-t:#fff; --chip-fg:#fff; --role:#FFBE4D; --name:#4B71EC;
   --quote:#D4D4D4; --avatar-bd:rgba(99,77,51,.42);
@@ -66,6 +68,8 @@ body{background:#08070f;font-family:var(--id);color:#fff;
 }
 .frame[data-tier="plus"]{
   --page:#130800;
+  --page-grad:#130800;
+  --seg-fg:#130800;
   --glow:#EAC361;
   --accent:#EED387;
   --num:#fff;
@@ -110,7 +114,7 @@ body{background:#08070f;font-family:var(--id);color:#fff;
 .scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
   -webkit-overflow-scrolling:touch}
 .scroll::-webkit-scrollbar{display:none}
-.page{position:relative;width:412px}
+.page{position:relative;width:412px;background:var(--page-grad)}
 
 /* ── background glow ────────────────────────────────────────────────
    Three blurred ellipses in the export, two of them plus-lighter. Reproduced
@@ -187,9 +191,9 @@ body{background:#08070f;font-family:var(--id);color:#fff;
 .seg .s-plus{left:123px;width:115px}
 /* the label on the thumb reads as a hole punched in it — the page's own colour,
    and set heavier than the one beside it, exactly as the export draws them */
-.frame[data-tier="pro"]  .s-pro {color:var(--page);font-weight:600}
+.frame[data-tier="pro"]  .s-pro {color:var(--seg-fg);font-weight:600}
 .frame[data-tier="pro"]  .s-plus{color:#fff}
-.frame[data-tier="plus"] .s-plus{color:var(--page);font-weight:600}
+.frame[data-tier="plus"] .s-plus{color:var(--seg-fg);font-weight:600}
 .frame[data-tier="plus"] .s-pro {color:#fff}
 
 .badge{position:absolute;left:20.2px;top:12px;height:17.7px;border-radius:2.8px;z-index:3;
