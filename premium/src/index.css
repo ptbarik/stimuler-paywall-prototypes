@@ -1,0 +1,511 @@
+@import "tailwindcss";
+
+/* ── fonts ──────────────────────────────────────────────────────────
+   The Figma file is set in Google Sans, which is not self-hostable. Inter
+   Display is the match carried across the earlier Stimuler paywall prototypes
+   — same double-storey `a`, same single-storey `g`, same straight `y` tail —
+   so this page sits with them rather than beside them. Poppins is the
+   animation scenes' own family and stays with the scenes. */
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url('/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url('/fonts/poppins-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-weight:200 800;font-display:swap;src:url('/fonts/manrope.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-display:swap;src:url('/fonts/urbanist-700.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-style:italic;font-display:swap;src:url('/fonts/urbanist-700i.woff2') format('woff2')}
+
+:root{
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --card:'Poppins',system-ui,-apple-system,sans-serif;
+
+  /* the two grounds. The paywall and the interstitial share `--page` — that
+     shared warm base is half of why the handover between them can be a fade
+     rather than a cut. */
+  --page:#130800;
+  --home:#0A0A0A;
+
+  --gold:#EED387;
+  --gold-dim:#B07E35;
+  --gold-faint:#7C5426;
+  --edge:linear-gradient(123deg,#FFF2CF 23%,#E7CA79 99%);
+  --surface:rgba(231,202,121,.07);
+  --chip-rim:linear-gradient(154deg,#926224,#D49C4B 18.75%,#E7CA79 50%,#D49C4B 76%,#926224);
+  --rule:linear-gradient(90deg,#4C301C,#E7CA79);
+  --hl:rgba(231,202,121,.3); --hl-bd:#B67E35;
+  --tpill-free:linear-gradient(100deg,#7A5526,#A3763A 50%,#7A5526);
+  --tpill-pro:linear-gradient(115deg,#DBA936,#FFEB6A);
+  --cta:linear-gradient(90deg,#D9962B,#FFE191 50%,#D9962B);
+  --cta-fg:#402305;
+  --name:#CBA167; --quote:#CFCFCF; --faq-a:#C4A97A;
+  --key-rgb:167,134,44;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:#08070f;font-family:var(--id);color:#fff;
+  display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden}
+
+/* ── shell ──────────────────────────────────────────────────────────
+   412×917 cannot reflow, so the frame is *zoomed* to the window. `zoom`, never
+   `transform:scale()` — a scaled frame keeps its untransformed layout box, so
+   the pinned CTA and the scroll container land in the wrong place at every
+   window that isn't exactly 917 tall, which is nearly all of them. */
+.frame{position:relative;width:412px;height:917px;overflow:hidden;background:var(--page)}
+.scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.page{position:relative;width:412px}
+
+/* ── the warm glow ──────────────────────────────────────────────────
+   Three blurred ellipses, at the export's own geometry and colours — `3.svg`
+   draws them as `filter0_f` plus two `plus-lighter` siblings, and the same
+   three sit behind `4.png` through `7.png`.
+
+   They are the reason the interstitial can hand over to the paywall without a
+   cut: this element belongs to neither screen. It is painted once, underneath
+   both, and neither the crowns falling through it nor the copy fading out
+   across it ever touches its opacity. What the eye tracks across the boundary
+   is the light, and the light does not move. */
+.glows{position:absolute;left:0;top:0;width:412px;height:640px;pointer-events:none;overflow:hidden;
+  isolation:isolate;z-index:0;background:var(--page)}
+.glows i{position:absolute;display:block;border-radius:50%}
+.glows .g1{left:-103.8px;top:28.2px;width:516.7px;height:230.6px;filter:blur(145px);
+  background:#EAC361;opacity:.25}
+.glows .g2{left:177.7px;top:145.1px;width:336.3px;height:230.6px;filter:blur(48px);
+  background:#F1E8D2;opacity:.12;mix-blend-mode:plus-lighter}
+.glows .g3{left:215.3px;top:55.7px;width:302.6px;height:139.2px;filter:blur(97px);
+  background:#E19748;opacity:.6;mix-blend-mode:plus-lighter;transform:rotate(-29.7deg)}
+
+/* ── status bar ─────────────────────────────────────────────────────
+   Opaque: the page scrolls *under* it, so without a solid backdrop the hero
+   and the table slide through the time and the icons. */
+.status{position:absolute;left:0;top:0;width:412px;height:45px;z-index:60;pointer-events:none;
+  background:#000}
+.status .time{position:absolute;left:44.8px;top:11px;font-weight:600;font-size:16px;
+  letter-spacing:.2px;color:#fff}
+.status .ic{position:absolute;top:17px;display:block}
+.status .sig{right:60px;width:17px}.status .wifi{right:38px;width:16px}
+.status .bat{right:14px;width:25px}
+.status .batf{right:16.6px;top:19.4px;width:19.6px}
+.status .bate{right:11.6px;top:20.6px;width:1.5px}
+
+/* ══ 1 · the roadmap ════════════════════════════════════════════════
+   Drawn to `1.png` and `2.png`, which are flattened PNGs with no SVG twin —
+   so these are measured bounds off a 1:1 render rather than lifted geometry.
+   It exists to give the two entry points somewhere to be entered from; it is
+   not the thing under review. */
+
+.home{position:absolute;inset:0;background:var(--home);overflow:hidden}
+.home .greet{position:absolute;left:22px;top:70px;margin:0;font-size:26px;font-weight:600;
+  letter-spacing:-.5px;color:#fff}
+.streak{position:absolute;left:331px;top:72px;width:50px;height:33px;border-radius:9px;
+  border:1px solid #7A4118;background:#170D05;display:flex;align-items:center;justify-content:center;
+  gap:3px;font-size:17px;font-weight:600;color:#F0762B}
+.streak svg{width:19px;height:19px;display:block}
+
+.unit{position:absolute;left:0;top:133px;width:412px;display:flex;align-items:center;
+  justify-content:center;gap:11px;font-size:17px;font-weight:500;color:#EFE7D6}
+.unit i{display:block;width:22px;height:1px;background:#6B6047}
+.unit .sep{color:#6B6047}
+
+/* the timeline rail, and the three nodes hanging off it */
+.rail{position:absolute;left:37px;top:191px;width:2.5px;height:646px;
+  background:linear-gradient(180deg,#F8C6B7 0%,#6B4A3C 9%,#343434 22%,#2A2A2A 100%)}
+.node{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600}
+.node.on{left:22px;top:191px;width:33px;height:33px;background:#2E2113;
+  border:1.5px solid #B58239;color:#F0C877}
+.node.off{left:23px;width:30px;height:30px;border:1.5px solid #343434;background:#0F0F0F}
+.node.n2{top:662px}.node.n3{top:809px}
+
+/* the lesson card — the photo fills it, the title and the button sit *inside*
+   it over the bottom of the image, which is what makes it one object rather
+   than a picture with controls under it */
+.card{position:absolute;left:77px;top:193px;width:313px;height:344px;border-radius:16px;
+  overflow:hidden;background:#241C15}
+.card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 14%;display:block}
+.card .fade{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(0,0,0,.18) 0%,rgba(20,10,4,0) 34%,rgba(30,18,8,.55) 62%,rgba(34,20,9,.85) 100%)}
+.card .kind{position:absolute;left:14px;top:15px;height:28px;padding:0 12px 0 9px;border-radius:14px;
+  background:rgba(24,17,10,.55);backdrop-filter:blur(7px);display:flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:500;color:#fff}
+.card .kind svg{width:15px;height:15px}
+.card .ttl{position:absolute;left:16px;top:229px;margin:0;display:flex;align-items:center;gap:9px;
+  font-size:17.5px;font-weight:600;letter-spacing:-.2px;color:#fff}
+.card .ttl svg{width:18px;height:18px;flex:none}
+.card .go{position:absolute;left:16px;top:265px;width:282px;height:55px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.42);background:rgba(255,255,255,.13);
+  backdrop-filter:blur(3px);font:inherit;font-size:16px;font-weight:600;color:#fff;cursor:pointer}
+
+.hint{position:absolute;left:79px;top:558px;width:300px;margin:0;display:flex;gap:11px;
+  font-size:16px;line-height:32px;color:#8E857B;white-space:pre-line}
+.hint svg{flex:none;width:17px;height:17px;margin-top:8px;color:#8E857B}
+.locked{position:absolute;left:77px;width:312px;height:87px;border-radius:14px;
+  border:1px solid #262626;display:flex;align-items:center;gap:15px;padding-left:22px;
+  font-size:17px;font-weight:500;color:#585858}
+.locked svg{width:30px;height:30px;flex:none}
+.locked.l1{top:637px}.locked.l2{top:757px}
+
+/* ── the nav bar ────────────────────────────────────────────────────
+   Five tabs. The crown is the only one that is ever gold, and the only one
+   that does anything here. */
+.nav{position:absolute;left:0;bottom:0;width:412px;height:92px;z-index:50;background:#050505;
+  border-top:1px solid #131313}
+.nav button{position:absolute;top:12px;width:64px;height:56px;border:0;background:none;padding:0;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;
+  font:inherit;font-size:11.5px;font-weight:500;color:#868686}
+.nav button svg{width:24px;height:24px;display:block}
+.nav button.on{color:#DEC198}
+.nav .crownwrap{position:relative;display:block;width:24px;height:24px}
+/* the specular sweep — a narrow light band travelling left to right *inside*
+   the glyph, clipped to its own paths in `CrownGlyph`. Not a scale, not a
+   bounce, not a badge: a nav item that pulses becomes wallpaper inside a day,
+   and a badge on a tab you have not asked for is a notification you did not
+   earn. The band is parked off the left edge until its class arrives, so a
+   crown that is not sweeping shows nothing at all. */
+.sheenband{transform:translateX(0);opacity:0}
+.sweep .sheenband{animation:sweep 900ms cubic-bezier(.4,0,.5,1) 1}
+@keyframes sweep{
+  0%{transform:translateX(0);opacity:1}
+  100%{transform:translateX(130px);opacity:1}
+}
+
+/* ── the sheet, after a first lesson ────────────────────────────────*/
+.scrim{position:absolute;inset:0;z-index:44;background:rgba(0,0,0,.55);border:0;padding:0;
+  cursor:pointer}
+.psheet{position:absolute;left:0;bottom:104px;width:412px;height:211px;z-index:45;
+  border-radius:22px 22px 0 0;overflow:hidden;
+  background:radial-gradient(120% 88% at 50% 0%,#3E2B12 0%,#241708 46%,#170D03 100%);
+  border-top:1px solid #5A4220}
+.psheet .x{position:absolute;right:18px;top:9px;width:25px;height:25px;border-radius:13px;
+  border:1px solid rgba(240,188,114,.45);background:rgba(61,46,23,.7);color:#F0BC72;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.psheet .x svg{width:8px;height:8px}
+.psheet .cr{position:absolute;left:0;top:20px;width:412px;display:flex;justify-content:center}
+.psheet h2{position:absolute;left:0;top:66px;width:412px;margin:0;text-align:center;
+  font-size:24.8px;line-height:28px;font-weight:600;letter-spacing:-.3px;color:#fff;
+  white-space:pre-line}
+.psheet .go{position:absolute;left:42px;top:139px;width:328px;height:48px;border-radius:24px;
+  border:0;padding:0;cursor:pointer;background-image:var(--cta);color:var(--cta-fg);
+  font:inherit;font-family:'Manrope',sans-serif;font-size:16.5px;font-weight:700;letter-spacing:-.1px}
+
+/* ══ 2 · the crown interstitial ═════════════════════════════════════ */
+
+.inter{position:absolute;inset:0;z-index:20;cursor:pointer;overflow:hidden}
+/* mid and far crowns fall *behind* the copy, near ones in front of it — which
+   is the whole reason the layers are worth having */
+.field{position:absolute;inset:0;pointer-events:none}
+.field.back{z-index:1}
+.field.front{z-index:3}
+.field i{position:absolute;left:0;top:0;display:block;will-change:transform}
+.beats{position:absolute;inset:0;z-index:2;pointer-events:none}
+
+.lockup{position:absolute;left:0;width:412px;display:flex;align-items:center;
+  justify-content:center;font-size:27.5px;font-weight:600;letter-spacing:-.3px;color:#fff}
+/* width and height are set per frame rather than derived from padding: the
+   pill's box is interpolated across the flight so the landing matches the
+   paywall header exactly — see LOCKUP.pill */
+.lockup .pill{flex:none;display:flex;align-items:center;justify-content:center;
+  background-image:linear-gradient(115deg,#EBB55D,#FAD886 48%,#EBB45C);
+  color:#2E1B06;font-weight:700;letter-spacing:0}
+
+.beat{position:absolute;left:0;width:412px;text-align:center;margin:0;color:#fff}
+.beat.one{font-size:20.6px;font-weight:500;letter-spacing:-.1px}
+.beat.two{font-size:24.8px;line-height:34px;font-weight:600;letter-spacing:-.3px}
+.beat.three{font-size:27.5px;font-weight:500;letter-spacing:-.2px;color:#D9A85A}
+
+/* each word is its own box so it can carry its own opacity, blur and rise.
+   `will-change` on the filter matters here: forty-two crowns are compositing
+   behind these, and an un-promoted blur on six words re-rasterises the text
+   layer every frame of the cascade. */
+.beat .w,.lockup > span{display:inline-block;will-change:opacity,transform,filter}
+.beat .em{color:var(--gold)}
+
+/* `50% OFF` — the gradient is the type's own fill, and the specular pass is
+   masked to the glyphs rather than swept across the box, so the light travels
+   *through the letters* instead of over a rectangle containing them. */
+.off{position:absolute;left:0;width:412px;text-align:center;margin:0;
+  font-size:64.6px;font-weight:700;letter-spacing:-1.6px;line-height:1;
+  background-image:linear-gradient(180deg,#FCE3A4 0%,#E9B75C 62%,#D99A38 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.off .sheen{position:absolute;inset:0;
+  background-image:linear-gradient(100deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 58%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ══ 3 · the paywall ════════════════════════════════════════════════ */
+
+.head{position:absolute;left:0;width:412px;display:flex;align-items:center;justify-content:center;
+  gap:8px;z-index:12;font-size:18px;font-weight:600;letter-spacing:-.2px;color:#fff}
+.head .pill{display:flex;align-items:center;justify-content:center;width:53px;height:24px;
+  border-radius:12px;background-image:linear-gradient(115deg,#EBB55D,#FAD886 48%,#EBB45C);
+  color:#2E1B06;font-size:13.5px;font-weight:700;letter-spacing:.2px}
+
+/* the carousel's slot. The scenes paint `#0D0B10` so they read as cards in
+   their own projects; here they sit straight on the warm page, so the root is
+   cleared from outside rather than by editing a vendored file. */
+.hero{position:absolute;z-index:10;overflow:hidden}
+/* the scene roots, two levels down through the carousel's panels — each one
+   paints its own `#0D0B10` card so it reads standalone in its own project,
+   and on this warm page that card reads as a hole punched in the glow */
+.hero > *,.hero [data-panel] > *{background-color:transparent !important}
+
+.dots{position:absolute;z-index:11;display:flex;align-items:center}
+.dots i{display:block;height:3px;border-radius:1.5px;background:var(--gold-faint);
+  transition:width 320ms cubic-bezier(.32,.72,0,1),background-color 320ms ease}
+.dots i.on{background:var(--gold-dim)}
+
+.cap{position:absolute;left:0;width:412px;z-index:11;margin:0;text-align:center;
+  font-weight:600;letter-spacing:-.3px;color:#fff;white-space:pre-line}
+.cap em{font-style:normal;color:var(--gold)}
+
+/* ── the tier surface (table + testimonial cards) ───────────────────*/
+.surf{position:absolute;background:var(--surface)}
+.surf .rim{position:absolute;inset:0;border-radius:inherit;padding:.6px;pointer-events:none;
+  background-image:var(--edge);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:.34}
+
+.chip{position:absolute;height:38px;border-radius:10px;background:#000;opacity:.6;
+  display:flex;align-items:center;justify-content:center;z-index:6;
+  font-size:14.5px;font-weight:500;color:#fff;white-space:nowrap;
+  box-shadow:0 -2px 12.7px rgba(0,0,0,.2)}
+.chip .rim{position:absolute;inset:0;border-radius:inherit;padding:.95px;pointer-events:none;
+  background-image:var(--chip-rim);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude}
+
+/* ── Free vs PRO ────────────────────────────────────────────────────
+   The highlight does not travel here — there is one paid column and it is the
+   one being sold, so it is simply always lit. */
+.tbl{z-index:5}
+.tbl .hl{position:absolute;width:84.79px;border-radius:12.48px;
+  background:var(--hl);border:.57px solid var(--hl-bd)}
+/* a 0.53px hairline in the export, drawn as 1px at the coverage that
+   sub-pixel line actually resolves to, so it reads the same at any DPR */
+.tbl .rule{position:absolute;height:1px;opacity:.63;background-image:var(--rule)}
+.tpill{position:absolute;width:54.24px;height:20.21px;border-radius:10.1px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11.5px;font-weight:600;letter-spacing:.1px}
+.tpill.free{background-image:var(--tpill-free);color:#F0EBE5}
+.tpill.pro{background-image:var(--tpill-pro);color:#0A091A}
+.trow-l{position:absolute;left:32.4px;width:142px;font-size:13.15px;font-weight:400;line-height:22px;
+  color:#fff;white-space:pre-line;transform:translateY(-50%)}
+.trow-v{position:absolute;width:84.79px;text-align:center;font-size:13px;font-weight:500;
+  line-height:16px;white-space:pre-line;transform:translateY(-50%)}
+.trow-v.free{color:#A7A7A7}.trow-v.pro{color:#fff}
+
+/* ── social proof · the laurel carousel ────────────────────────────
+   The `Dynamic carousel` export: 145 tall, items 253.53 wide on a 239.9 pitch,
+   the centre one at full size and the rest at 0.3. The pitch being *narrower*
+   than the item is what makes the band read as one continuous strip rather
+   than as three cards with gaps between them.
+
+   Transforms are computed per frame rather than transitioned, because the ring
+   wraps: an item leaving the right re-enters from the left, and a CSS
+   transition would animate it back across the whole band. At |d| = 1.5 an item
+   is fully outside the frame, so the wrap happens where nothing can see it. */
+.loved{position:absolute;left:0;width:412px;z-index:6;overflow:hidden}
+.loved .unit2{position:absolute;left:50%;top:50%;display:flex;align-items:center;
+  justify-content:center;will-change:transform,opacity}
+/* the wrapper is the rotated glyph's bounding box; the ink inside it is the
+   narrow vertical branch the reference draws, ~30 × 65 */
+.loved .lr{flex:none;display:flex;align-items:center;justify-content:center;
+  width:56px;height:70px}
+.loved .lr img{display:block;width:52px;height:63px}
+.loved .lr.l img{transform:rotate(30deg)}
+.loved .lr.r img{transform:rotate(150deg) scaleY(-1)}
+.loved .mid{flex:none;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;white-space:nowrap}
+
+.loved .lby{font-family:'Manrope',sans-serif;font-weight:600;font-size:7.96px;
+  line-height:86%;letter-spacing:.34em;color:#fff;
+  /* the tracking leaves a trailing space the centring counts, so the block is
+     nudged half of it back to sit on the same optical axis as the number */
+  text-indent:.34em}
+.loved .n1{margin-top:7px;font-family:var(--card);font-weight:700;font-size:29.23px;
+  line-height:86%;letter-spacing:-.02em;color:#fff;text-align:center}
+.loved .n1 .u{display:block;font-weight:700}
+.loved .n2{font-family:var(--card);font-weight:700;font-size:27.5px;line-height:1.1;
+  color:#fff;text-align:center}
+.loved .n2 .u{display:block;font-weight:400;font-size:14px;line-height:1.2;margin-top:3px}
+.loved .stars{margin-top:6px;width:83px;height:12.8px}
+.loved .stars img{display:block;width:100%;height:100%}
+.loved .aw{font-family:var(--card);font-weight:700;font-size:19.5px;line-height:24px;
+  color:#fff;text-align:center;white-space:pre-line}
+
+/* the trophy and the 92% claim */
+.claim{position:absolute;left:0;width:412px;z-index:6}
+.claim .tro{position:absolute;overflow:hidden}
+.claim .tro img{position:absolute;left:0;top:-8.33%;width:108.79%;height:108.33%;max-width:none;
+  display:block}
+.claim .pct{position:absolute;margin:0;text-align:right;font-weight:700;letter-spacing:-1.2px;
+  line-height:1;color:#FCDD95}
+.claim .cl{position:absolute;margin:0;text-align:right;font-weight:600;letter-spacing:-.3px;
+  color:var(--gold);white-space:pre-line}
+
+.trow{position:absolute;left:0;width:412px;display:flex;overflow-x:auto;overflow-y:hidden;z-index:6;
+  scroll-snap-type:x mandatory;scrollbar-width:none}
+.trow::-webkit-scrollbar{display:none}
+.tcard{position:relative;flex:none;border-radius:32px;scroll-snap-align:start}
+.tcard .in{position:absolute;left:24.76px;top:27.12px;width:244.59px;display:flex;
+  flex-direction:column;align-items:center}
+.tcard .av{flex:none;width:117.65px;height:117.65px;border-radius:13.45px;overflow:hidden;
+  position:relative;border:2.94px solid rgba(99,77,51,.42)}
+.tcard .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  max-width:none}
+.tcard .q{margin:20.6px 0 0;width:244.59px;text-align:center;font-family:var(--card);
+  font-weight:600;font-size:15.69px;line-height:25.49px;color:var(--quote)}
+.tcard .who{margin-top:18.6px;text-align:center;font-family:'Urbanist',sans-serif;font-weight:700;
+  font-style:italic;white-space:nowrap}
+.tcard .nm{display:block;font-size:19.6px;line-height:31.4px;color:var(--name)}
+.tcard .ro{display:block;margin-top:-5.8px;font-size:11.77px;line-height:31.4px;color:#fff}
+
+/* ── FAQ ────────────────────────────────────────────────────────────
+   The export only draws it shut. The answers are written in `copy.js` so the
+   rows do something; the block is the last thing on the page, so opening one
+   only grows the page rather than moving anything above it. */
+.faq{position:absolute;left:0;width:412px;z-index:6}
+.fq{position:relative;width:412px;padding:0 58px 0 47px;cursor:pointer}
+.fq .row{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  min-height:52px;padding:11px 0}
+.fq p{margin:0;font-size:13.8px;font-weight:400;line-height:20px;color:#fff;white-space:pre-line}
+.fq .cv{flex:none;width:11.5px;height:7.8px;color:#fff;
+  transition:transform 260ms cubic-bezier(.32,.72,0,1)}
+.fq.open .cv{transform:rotate(180deg)}
+.fq .ans{overflow:hidden;transition:height 280ms cubic-bezier(.32,.72,0,1)}
+.fq .ans p{padding:0 0 12px;font-size:12.5px;line-height:19px;color:var(--faq-a);white-space:normal}
+.fqr{width:300.4px;height:1px;margin:0 auto;opacity:.5;
+  background:linear-gradient(90deg,rgba(var(--key-rgb),0),rgba(var(--key-rgb),1) 51%,rgba(var(--key-rgb),0))}
+
+/* ══ 4 · the pinned CTA ═════════════════════════════════════════════
+   All of this is the `CTA3 - with final offer` export's own values — see
+   `design.js` for the three that were wrong before and why they mattered. */
+
+.sheet{position:absolute;left:0;bottom:0;width:412px;z-index:40;
+  border-radius:18px 18px 0 0;
+  background:linear-gradient(180.19deg,#48412B -36.63%,#130A05 84.74%,#000 99.83%);
+  border-top:1px solid #595959}
+
+/* the export's blurred gold bar across the sheet's top edge. Over the sheet,
+   not under it: it is what makes the top of the card read as lit rather than
+   as an edge, and under an opaque sheet none of it survives. */
+.sheet .halo{position:absolute;left:-2.5px;pointer-events:none;border-radius:50%}
+
+.sheet .trust{position:absolute;left:0;width:412px;display:flex;align-items:center;
+  justify-content:center;gap:5.69px;margin:0;font-weight:500;letter-spacing:-.01em;
+  line-height:17px;color:#fff}
+.sheet .trust svg{flex:none;width:11.65px;height:13.31px}
+
+/* the price box, and the warm ellipse inside its top edge */
+/* the box sits very slightly *darker* than the sheet around it, not lighter —
+   the export's own reading, and it is what lets the ember at its top-right be
+   the only warm thing inside it */
+.pbox{position:absolute;overflow:hidden;border:1px solid #D7A04F;
+  background:rgba(0,0,0,.10)}
+.pbox i{position:absolute;display:block;border-radius:50%}
+
+/* the price. Both figures live in the same centred slot, which is what lets
+   the swap be one move rather than two animations kept in step by hand. */
+.price{position:absolute;left:0;width:412px;display:flex;align-items:center;
+  justify-content:center;font-weight:800;letter-spacing:-1px;color:#fff;
+  font-variant-numeric:tabular-nums;text-shadow:0 4px 36px rgba(255,255,255,.25)}
+.price > span{position:absolute;left:0;width:412px;height:100%;display:flex;
+  align-items:center;justify-content:center}
+.price .line{position:absolute;left:50%;top:50%;height:3px;border-radius:2px;
+  background:#BF4A4A;transform-origin:left center}
+.sub{position:absolute;left:0;width:412px;height:17px;display:flex;align-items:center;
+  justify-content:center;margin:0;font-weight:500;letter-spacing:-.01em;color:#fff}
+
+/* ── the badge ──────────────────────────────────────────────────────
+   `3.52px` corners, not a pill: at 11 it floats on the card, at 3.5 it reads
+   as a tab cut into the box's top edge, which is what the export draws.
+
+   `tabular-nums`, and the digits do not animate. A flip or a slide on every
+   second is fine for four seconds and exhausting across a three-minute page
+   visit — and the point of the timer is that it is *true*, not that it is
+   busy. */
+.badge{position:absolute;display:flex;align-items:center;justify-content:center;
+  padding:1.17px 9.39px;z-index:2;
+  background:linear-gradient(90deg,#564DC1 0%,#978FFD 50%,#564DC1 100%);
+  font-weight:700;letter-spacing:-.01em;line-height:17px;color:#fff;white-space:nowrap}
+.badge .t{display:flex;align-items:center;font-variant-numeric:tabular-nums}
+.badge .t b{display:flex;align-items:center;justify-content:center;font-weight:600;
+  line-height:13px;background:transparent;transition:background-color 260ms ease}
+.badge .t.chips b{background:rgba(255,255,255,.21)}
+.badge .t s{display:block;width:2.12px;height:7.09px;text-decoration:none;
+  background:#fff;border-radius:1px;flex:none}
+
+.cta{position:absolute;border:0;padding:0;cursor:pointer;overflow:hidden;
+  background:linear-gradient(90.01deg,#D9962B .05%,#EBB45C 19.75%,#FFE191 50.02%,#EBB45C 79.81%,#D9962B 100%);
+  box-shadow:-8px 11px 12px rgba(15,13,37,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Manrope',sans-serif;font-weight:700;letter-spacing:-.01em;
+  line-height:140%;color:#402305}
+.cta > span{position:relative;z-index:2}
+
+/* ── the button's shine ─────────────────────────────────────────────
+   A narrow band skewed 22° and travelling left to right, clipped by the
+   button's own radius. The skew is the whole point: a vertical band sweeping
+   horizontally reads as a wipe, and it is the diagonal that reads as light
+   catching a curved surface.
+
+   It sweeps in 1.15s and then waits 3.6s. The pause is doing more work than
+   the sweep — at a shorter interval a gold button glinting every second and a
+   half stops being a highlight and becomes a texture, and the eye filters it
+   out inside a page visit. Rare enough to be noticed each time is the whole
+   specification. */
+.cta .shine{position:absolute;top:-40%;height:180%;width:34%;z-index:1;
+  pointer-events:none;transform:skewX(-22deg);
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.5) 48%,
+    rgba(255,255,255,.62) 52%,rgba(255,255,255,0));
+  animation:ctaShine 4.75s cubic-bezier(.42,0,.4,1) infinite}
+@keyframes ctaShine{
+  0%{left:-45%}
+  24%{left:125%}
+  100%{left:125%}
+}
+.more{position:absolute;left:0;width:412px;display:flex;align-items:center;
+  justify-content:center;background:none;border:0;padding:0;cursor:pointer;
+  backdrop-filter:blur(6.7066px);
+  font-family:'Urbanist',sans-serif;font-weight:500;line-height:36px;color:#B0B0B0;
+  text-decoration:underline;text-underline-offset:2px}
+
+/* ── prototype controls ─────────────────────────────────────────────*/
+.panel{position:fixed;right:12px;top:12px;bottom:12px;width:250px;z-index:99;overflow-y:auto;
+  font-size:11px;background:rgba(18,18,24,.92);border:1px solid rgba(255,255,255,.13);
+  border-radius:12px;padding:11px 12px;display:flex;flex-direction:column;gap:9px;color:#cfcfd6;
+  backdrop-filter:blur(8px);scrollbar-width:thin}
+.panel h3{margin:0;font-size:11.5px;font-weight:600;color:#fff}
+.panel .lbl{margin:4px 0 -3px;font-size:9.5px;letter-spacing:.7px;text-transform:uppercase;
+  color:#7d7d88}
+.panel .r{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.panel button{font:inherit;color:#cfcfd6;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:3px 7px;cursor:pointer}
+.panel button.on{background:#B07E35;border-color:#B07E35;color:#fff}
+.panel input[type=range]{width:100%}
+.panel .ro{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;
+  background:rgba(0,0,0,.35);border-radius:7px;padding:6px 8px;display:flex;
+  flex-direction:column;gap:2px}
+.panel .ro span{display:flex;justify-content:space-between;gap:8px}
+.panel .ro b{font-weight:400;color:#fff}
+.panel .note{margin:0;font-size:10px;line-height:14px;color:#7d7d88}
+/* the three flows read as cards rather than as another row of chips — they are
+   starting positions for a walkthrough, not toggles alongside the toggles */
+.panel button.flow{display:block;width:100%;text-align:left;padding:7px 9px;line-height:1.35}
+.panel button.flow b{display:block;font-size:11px;font-weight:600;color:#fff}
+.panel button.flow span{display:block;font-size:10.5px;color:#b9b9c4}
+.panel button.flow i{display:block;margin-top:3px;font-style:normal;font-size:9.5px;line-height:13px;
+  color:#7d7d88}
+.panel button.flow.on{background:#B07E35;border-color:#B07E35}
+.panel button.flow.on span,.panel button.flow.on i{color:rgba(255,255,255,.82)}
+.panel button:disabled{opacity:.4;cursor:default}
+
+@media (prefers-reduced-motion:reduce){
+  .fq .cv,.fq .ans,.dots i{transition-duration:1ms}
+  .cta .shine{display:none}
+  .crownwrap.sweep .sheen{animation:none}
+}

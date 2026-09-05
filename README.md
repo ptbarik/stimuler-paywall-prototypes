@@ -9,9 +9,11 @@ two can be put side by side and compared.
 |---|---|---|
 | [`iteration-a/`](iteration-a) | tier toggle **inside the price sheet** | https://stimuler-paywall-carousel.vercel.app |
 | [`iteration-b/`](iteration-b) | tier toggle **in the header** | https://stimuler-paywall-carousel-b.vercel.app |
+| [`roadmap/`](roadmap) | the roadmap paywall — one animation, one toggle | https://stimuler-roadmap-paywall.vercel.app |
+| [`premium/`](premium) | **the Premium tab flow** — nav → crown interstitial → paywall | https://stimuler-premium-tab.vercel.app |
 
 ```bash
-cd iteration-b        # or iteration-a
+cd premium            # or iteration-a, iteration-b, roadmap
 npm install
 npm run dev           # http://localhost:5173
 ```
@@ -49,6 +51,52 @@ Bottom-right of each: tier switch, play/pause, a scrubber across the whole loop,
 a reduced-motion toggle, and a readout of which scene is playing. `×` hides the
 panel. The hero is swipeable and the pagination dashes are clickable — both just
 move the clock, so the whole thing stays a pure function of time.
+
+## The roadmap paywall
+
+[`roadmap/`](roadmap) is a separate design — Figma `11032:8142` (Pro) and
+`11032:8409` (Pro+) — and a separate question. Where A and B ask *where does the
+tier toggle go*, this one asks what the page looks like when the hero is a
+**single** animation rather than a four-slide carousel, and the argument for the
+tier is carried by a PRO vs PRO+ comparison table further down instead.
+
+It runs `02-ai-tutors` alone in the hero, in the same bare 370×330 slot the
+export leaves for it, with the toggle in the header re-theming the whole 2558px
+page indigo ⇄ gold. Its README has the measurement notes — including the handful
+of places where reading the export literally and reading it correctly are not
+the same thing.
+
+## The Premium tab flow
+
+[`premium/`](premium) is the whole entry, not a page: the roadmap screen with
+its nav, the two ways into Premium (the crown's specular sweep, and a sheet
+after a first lesson), a one-time crown-fall interstitial, and the PRO paywall
+it hands over to — built from `~/Desktop/premium tab`.
+
+It is built around **three flows**, each staged in one click from the panel: a
+seasoned user who goes looking (the Premium tab, with the crown catching the
+light), the same user *pointed* rather than looking (the discovery sheet after
+a finished lesson), and a new user's first ever visit — the only one that plays
+the crown fall and `Welcome to Stimuler PRO`. The first two deliberately land
+on the same screen: the paywall should not be able to tell which door you came
+through.
+
+Two other things make it different from the three above. It runs the
+**consolidated carousel** in the hero rather than a single scene, with a caption
+per slide and the export's four pagination dashes under it. And it carries a
+**real 24-hour offer window**: one timestamp, written once and never rewritten,
+with the countdown derived from it on every tick, and an expiry that is
+terminal — past 24h the paywall is ₹1999 with no strike, no badge and no timer,
+and nothing on the page mentions that there was ever an offer.
+
+The interstitial's word cascade is lifted from the intro beats of
+[usa-onboarding-v2](https://usa-onboarding-v2.vercel.app/) — 740ms per word on
+`cubic-bezier(.22,.72,.24,1)`, 55ms apart, clearing a 4px blur and 10px of rise
+together, with a long hold after, because the reading happens in the hold
+rather than in the motion.
+
+Its README has the full notes, including the four places where the brief and
+the design disagreed and why the design won each one.
 
 ## Notes
 
