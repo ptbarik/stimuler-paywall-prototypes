@@ -1,0 +1,420 @@
+@import "tailwindcss";
+
+/* ── fonts ──────────────────────────────────────────────────────────
+   The Figma file is set in Google Sans, which is not self-hostable. Inter
+   Display is the match kept across the earlier Pro/Pro+ prototypes — same
+   double-storey `a`, same single-storey `g`, same straight `y` tail — so the
+   chrome here sits with them rather than beside them. Poppins is the animation
+   scene's own family and stays with the scene. */
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url('/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url('/fonts/poppins-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-weight:200 800;font-display:swap;src:url('/fonts/manrope.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-display:swap;src:url('/fonts/urbanist-700.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-style:italic;font-display:swap;src:url('/fonts/urbanist-700i.woff2') format('woff2')}
+
+:root{
+  --font-card:'Poppins',system-ui,-apple-system,sans-serif;
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+
+  /* The tier morph. Pulled from the 60fps shot "whistle-plan-selection-
+     interaction" rather than eyeballed: .easeOut(duration: 0.25) with a
+     stagger_delay of 0.04, so the page re-themes in 250ms ease-out beats
+     stepped 40ms apart from the thumb outward. */
+  --t:250ms; --te:cubic-bezier(0,0,.2,1);
+  --spring:cubic-bezier(.34,1.06,.44,1);   /* the two things that travel */
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:#08070f;font-family:var(--id);color:#fff;
+  display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden}
+
+/* ── the two palettes ───────────────────────────────────────────────
+   Read out of the two exports: fill attributes for the flats, gradient stop
+   lists for the ramps. Nothing here is sampled off a screenshot. */
+.frame[data-tier="pro"]{
+  --page:#0F0D25;
+  --accent:#877EFF;                       /* the headline's second line */
+  --close-bg:#151233; --close-bd:#8F8F8F; --close-fg:#8F8F8F;
+
+  --seg-well:#0E0B2D;
+  --thumb:linear-gradient(279deg,#382EA5,#9991FF 50%,#382EA5);
+  --seg-fg:#171436;                       /* the label punched in the thumb */
+
+  --benefit:rgba(50,44,109,.3);           /* #322C6D @ 30% */
+
+  --key-rgb:111,145,255;                  /* the tier's structural colour */
+  --surface:rgba(111,145,255,.08);
+  --edge:linear-gradient(123deg,#BBCBFF 23%,#6F91FF 99%);
+  --chip-bg:#0F0D25; --chip-o:1;
+  --chip-rim:linear-gradient(154deg,#534ABD,#7067DA 18.75%,#B0A9FF 50%,#7067DA 76%,#534ABD);
+  --hl:rgba(111,145,255,.15); --hl-bd:#6F91FF;
+  --tpill-a:linear-gradient(100deg,#5B7EF0,#9CB4FF 50%,#5B7EF0); --tpill-a-fg:#fff; --tpill-a-o:1;
+  --tpill-b:linear-gradient(115deg,#DBA936,#FFEB6A); --tpill-b-fg:#0A091A; --tpill-b-o:1;
+  --rule:linear-gradient(90deg,#3F58AC,#C9D6FF);
+
+  --award-l:#6F91FF; --name:#4B71EC; --role:#FFBE4D; --quote:#D4D4D4;
+  --faq-a:#9AA3C8;
+
+  --sheet:linear-gradient(180deg,#2F2B6F 0%,#100E26 84.86%,#000 100%);
+  --sheet-bd:#4C43BC; --sheet-glow:#6F91FF;
+  --planA-edge:conic-gradient(from 180deg,#463ACB 0deg,#6C61FB 174.8deg,#463ACB 360deg);
+  --planB-bd:#4B4789;
+  --badge:linear-gradient(101deg,#5348CA,#7E74FB 50%,#5348CA); --badge-fg:#fff;
+  --cta:linear-gradient(90deg,#4236C6,#6F64FF 50%,#4236C6); --cta-fg:#fff;
+
+  /* the three blurred ellipses behind the header, at the export's geometry */
+  --glow-1:#3B368C; --glow-1-o:.35; --glow-1-x:-18.6px;
+  --glow-2:#3B368C; --glow-2-o:.12; --glow-2-x:262.9px;
+  --glow-3:#3B368C; --glow-3-o:1;   --glow-3-x:300.5px;
+}
+.frame[data-tier="plus"]{
+  --page:#130800;
+  --accent:#EED387;
+  --close-bg:#3D2E17; --close-bd:rgba(240,188,114,.5); --close-fg:#F0BC72;
+
+  --seg-well:#1F1406;
+  --thumb:linear-gradient(279deg,#EAB259,#FFE292 50%,#EAB259);
+  --seg-fg:#130800;
+
+  --benefit:rgba(255,255,255,.06);
+
+  --key-rgb:167,134,44;
+  --surface:rgba(231,202,121,.07);
+  --edge:linear-gradient(123deg,#FFF2CF 23%,#E7CA79 99%);
+  /* the export drops the whole chip group to 60% on Pro+ — black fill, gold
+     rim, and the label riding down with it */
+  --chip-bg:#000; --chip-o:.6;
+  --chip-rim:linear-gradient(154deg,#926224,#D49C4B 18.75%,#E7CA79 50%,#D49C4B 76%,#926224);
+  --hl:rgba(231,202,121,.3); --hl-bd:#B67E35;
+  --tpill-a:linear-gradient(100deg,#5B7EF0,#9CB4FF 50%,#5B7EF0); --tpill-a-fg:#fff; --tpill-a-o:.8;
+  --tpill-b:linear-gradient(115deg,#DBA936,#FFEB6A); --tpill-b-fg:#0A091A; --tpill-b-o:1;
+  --rule:linear-gradient(90deg,#4C301C,#E7CA79);
+
+  --award-l:#E3C487; --name:#CBA167; --role:#fff; --quote:#CFCFCF;
+  --faq-a:#C4A97A;
+
+  --sheet:linear-gradient(180deg,#383020 0%,#130A05 84.86%,#000 100%);
+  --sheet-bd:#795E2D; --sheet-glow:#E7CA79;
+  --planA-edge:conic-gradient(from 180deg,#D59E4D 0deg,#FDD285 174.8deg,#D59D4C 360deg);
+  --planB-bd:#5E594B;
+  --badge:linear-gradient(101deg,#E8C15F,#C48722); --badge-fg:#fff;
+  --cta:linear-gradient(90deg,#DB992F,#FFE090 50%,#DB992F); --cta-fg:#402305;
+
+  --glow-1:#EAC361; --glow-1-o:.25; --glow-1-x:-103.8px;
+  --glow-2:#F1E8D2; --glow-2-o:.12; --glow-2-x:177.7px;
+  --glow-3:#E19748; --glow-3-o:.6;  --glow-3-x:215.3px;
+}
+
+/* Everything that carries a tier colour eases on the same 250ms curve; the
+   stagger below is what makes the morph read as one move rather than a flash. */
+.tint{transition:background-color var(--t) var(--te),color var(--t) var(--te),
+  border-color var(--t) var(--te),background-image var(--t) var(--te),opacity var(--t) var(--te)}
+.s1{transition-delay:40ms}  .s2{transition-delay:80ms}
+.s3{transition-delay:120ms} .s4{transition-delay:160ms} .s5{transition-delay:200ms}
+
+/* ── shell ──────────────────────────────────────────────────────────
+   The 412×917 frame cannot reflow, so it is *zoomed* to fit the window.
+   `zoom`, never `transform:scale()` — a scaled frame keeps its untransformed
+   layout box, so the pinned sheet and the scroll container land in the wrong
+   place at every window that isn't exactly 917 tall. */
+.frame{position:relative;width:412px;height:917px;overflow:hidden;background:var(--page);
+  transition:background-color var(--t) var(--te)}
+.scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.page{position:relative;width:412px;background:var(--page);
+  transition:background-color var(--t) var(--te)}
+
+/* ── background glow ────────────────────────────────────────────────
+   Three blurred ellipses in the export, two of them plus-lighter. Reproduced
+   as three blurred divs at the same geometry rather than baked to an image, so
+   the tier swap is a colour transition and not a crossfade of two bitmaps.
+   The two frames put the group at different x — Pro's is 85.24px right of
+   Pro+'s — so the x is a variable too. */
+.glows{position:absolute;left:0;top:0;width:412px;height:640px;pointer-events:none;overflow:hidden;
+  isolation:isolate;z-index:0;background:var(--page);transition:background-color var(--t) var(--te)}
+.glows i{position:absolute;display:block;border-radius:50%;
+  transition:background-color var(--t) var(--te),opacity var(--t) var(--te),left var(--t) var(--te)}
+.glows .g1{left:var(--glow-1-x);top:28.2px;width:516.7px;height:230.6px;filter:blur(145px);
+  background:var(--glow-1);opacity:var(--glow-1-o)}
+.glows .g2{left:var(--glow-2-x);top:145.1px;width:336.3px;height:230.6px;filter:blur(48px);
+  background:var(--glow-2);opacity:var(--glow-2-o);mix-blend-mode:plus-lighter}
+.glows .g3{left:var(--glow-3-x);top:55.7px;width:302.6px;height:139.2px;filter:blur(97px);
+  background:var(--glow-3);opacity:var(--glow-3-o);mix-blend-mode:plus-lighter;
+  transform:rotate(-29.7deg)}
+
+/* ── status bar ─────────────────────────────────────────────────────
+   Black in both tiers, and opaque: the page scrolls *under* it, so without a
+   solid backdrop the hero and the table slide through the time and the icons. */
+.status{position:absolute;left:0;top:0;width:412px;height:45px;z-index:30;pointer-events:none;
+  background:#000}
+.status .time{position:absolute;left:44.8px;top:11px;font-family:var(--id);font-weight:600;
+  font-size:16px;letter-spacing:.2px;color:#fff}
+.status .ic{position:absolute;top:17px;display:block}
+.status .sig{right:60px;width:17px}.status .wifi{right:38px;width:16px}
+.status .bat{right:14px;width:25px}
+.status .batf{right:16.6px;top:19.4px;width:19.6px}
+.status .bate{right:11.6px;top:20.6px;width:1.5px}
+
+/* ── close ──────────────────────────────────────────────────────────*/
+.close{position:absolute;left:21.08px;top:66.76px;width:24.48px;height:24.48px;border-radius:12.24px;
+  z-index:20;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+  background:var(--close-bg);border:1px solid var(--close-bd);color:var(--close-fg)}
+.close svg{width:5.87px;height:5.87px}
+
+/* ── the tier toggle ────────────────────────────────────────────────
+   The one control on the page, and the reason it exists: the whole thing —
+   background, headline accent, benefit copy, table highlight, testimonials,
+   sheet and CTA — re-themes off this single piece of state.
+
+   The export draws the track at 77% opacity with a grey hairline that does
+   *not* change with the tier; only the well behind it and the thumb do. */
+.seg{position:absolute;left:83.74px;top:101.81px;width:244.05px;height:43.38px;border-radius:20.71px;
+  background:var(--seg-well);z-index:16;cursor:pointer;
+  transition:background-color var(--t) var(--te)}
+.seg .rim{position:absolute;inset:0;border-radius:inherit;padding:1.1px;pointer-events:none;opacity:.77;
+  /* the export mirrors the track, so this ramp runs down-*left*, and the box
+     only sees the middle 71% of it — the stops are re-solved for that window */
+  background-image:linear-gradient(195deg,#636363,#B8B8B8 36.7%,#525252 73.1%,#474747);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude}
+.seg .thumb{position:absolute;top:4.8px;width:113.45px;height:33.77px;border-radius:16.89px;
+  background-image:var(--thumb);
+  transition:left var(--t) var(--spring),background-image var(--t) var(--te)}
+.frame[data-tier="pro"]  .seg .thumb{left:5.07px}
+.frame[data-tier="plus"] .seg .thumb{left:124.9px}
+.seg button{position:absolute;top:0;height:100%;border:0;background:none;padding:0;cursor:pointer;
+  font-family:var(--id);font-size:13.5px;font-weight:400;letter-spacing:-.2px;white-space:nowrap;
+  transition:color var(--t) var(--te)}
+.seg .s-pro{left:5.07px;width:113.45px}
+.seg .s-plus{left:124.9px;width:113.45px}
+/* the active label reads as a hole punched in the thumb — the page's own
+   colour, set heavier than the one beside it, exactly as the export draws it */
+.frame[data-tier="pro"]  .s-pro {color:var(--seg-fg);font-weight:600}
+.frame[data-tier="pro"]  .s-plus{color:#fff}
+.frame[data-tier="plus"] .s-plus{color:var(--seg-fg);font-weight:600}
+.frame[data-tier="plus"] .s-pro {color:#fff}
+
+/* ── headline ───────────────────────────────────────────────────────*/
+.head{position:absolute;left:0;top:177.6px;width:412px;margin:0;text-align:center;z-index:12;
+  font-family:var(--id);font-weight:700;font-size:25px;line-height:29px;letter-spacing:-.42px;color:#fff}
+.head em{display:block;font-style:normal;color:var(--accent);transition:color var(--t) var(--te)}
+
+/* ── the hero animation ─────────────────────────────────────────────
+   `02-ai-tutors`, at native size in the slot the export left for it. The scene
+   paints `#0D0B10` so it reads as a card in its own project; here it sits
+   straight on the page, so the root is cleared from outside rather than by
+   editing a vendored file. */
+.hero{position:absolute;z-index:10;overflow:hidden}
+.hero > *{background-color:transparent !important}
+
+/* ── the benefit card ───────────────────────────────────────────────*/
+.benefits{position:absolute;left:39.5px;top:625.32px;width:333px;height:172px;border-radius:12px;
+  background:var(--benefit);z-index:6;padding:12px 0;
+  transition:background-color var(--t) var(--te)}
+.benefits li{display:flex;align-items:center;height:28px;margin-bottom:12px;list-style:none}
+.benefits li:last-child{margin-bottom:0}
+.benefits .ic{flex:none;width:28px;height:28px;margin-left:12px;color:#fff}
+.benefits .ic svg{display:block;width:100%;height:100%}
+.benefits p{margin:0 0 0 11.33px;font-family:var(--id);font-size:14.2px;font-weight:400;
+  letter-spacing:-.1px;color:rgba(255,255,255,.72);white-space:nowrap}
+
+/* ── section chips ──────────────────────────────────────────────────*/
+.chip{position:absolute;left:40.93px;height:38px;border-radius:10px;background:var(--chip-bg);
+  display:flex;align-items:center;justify-content:center;z-index:6;opacity:var(--chip-o);
+  font-family:var(--id);font-size:14.5px;font-weight:500;color:#fff;white-space:nowrap;
+  box-shadow:0 -2px 12.7px rgba(0,0,0,.2);
+  transition:background-color var(--t) var(--te),opacity var(--t) var(--te)}
+.chip .rim{position:absolute;inset:0;border-radius:inherit;padding:.95px;pointer-events:none;
+  background-image:var(--chip-rim);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  transition:background-image var(--t) var(--te)}
+
+/* ── the tier surface (table + testimonial cards) ───────────────────*/
+.surf{position:absolute;background:var(--surface);
+  transition:background-color var(--t) var(--te)}
+.surf .rim{position:absolute;inset:0;border-radius:inherit;padding:.6px;pointer-events:none;
+  background-image:var(--edge);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:.34;
+  transition:background-image var(--t) var(--te)}
+
+/* ── PRO vs PRO+ ────────────────────────────────────────────────────
+   One table with the delta marked inside it. The highlight travels to the tier
+   you are on, so the column you are buying is the one reading in white — which
+   is what keeps this from being the paid-vs-paid grid that hands the decision
+   to price. */
+.tbl{left:15px;top:832.5px;width:382px;height:417.7px;border-radius:32px;z-index:5}
+.tbl .hl{position:absolute;width:84.79px;border-radius:12.48px;
+  background:var(--hl);border:.57px solid var(--hl-bd);
+  transition:left var(--t) var(--spring),background-color var(--t) var(--te),border-color var(--t) var(--te)}
+/* a 0.53px hairline in the export; drawn as 1px at the coverage that
+   sub-pixel line actually resolves to, so it reads the same at any DPR */
+.tbl .rule{position:absolute;height:1px;opacity:.63;background-image:var(--rule);
+  transition:background-image var(--t) var(--te)}
+.tpill{position:absolute;width:54.24px;height:20.21px;border-radius:10.1px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--id);font-size:11.5px;font-weight:600;letter-spacing:.1px;
+  transition:background-image var(--t) var(--te),color var(--t) var(--te),opacity var(--t) var(--te)}
+.tpill.a{background-image:var(--tpill-a);color:var(--tpill-a-fg);opacity:var(--tpill-a-o)}
+.tpill.b{background-image:var(--tpill-b);color:var(--tpill-b-fg);opacity:var(--tpill-b-o)}
+.trow-l{position:absolute;left:32.4px;width:142px;font-family:var(--id);font-size:13.15px;font-weight:400;
+  line-height:22px;color:#fff;white-space:pre-line;transform:translateY(-50%)}
+.trow-v{position:absolute;width:84.79px;text-align:center;font-family:var(--id);font-size:13px;
+  font-weight:500;line-height:16px;white-space:pre-line;transform:translateY(-50%);
+  transition:color var(--t) var(--te)}
+.trow-v.on{color:#fff}.trow-v.off{color:#A7A7A7}
+
+/* ── social proof ───────────────────────────────────────────────────
+   The laurels are the same four rotated instances the earlier prototypes use;
+   this export draws them a shade smaller and 64px higher up the page. */
+.loved{position:absolute;left:0;top:1353px;width:412px;height:56px;z-index:6}
+.loved .lr{position:absolute;top:0;display:flex;align-items:center;justify-content:center;
+  width:52.777px;height:55.491px}
+.loved .lr img{display:block;width:35.92px;height:43.338px}
+.lb{left:42.1px}.lb img{transform:rotate(30deg)}
+.la{left:155.1px}.la img{transform:rotate(150deg) scaleY(-1)}
+.ld{left:203.1px}.ld img{transform:rotate(30deg)}
+.lc{left:316.1px}.lc img{transform:rotate(150deg) scaleY(-1)}
+/* the 2.03px tracking leaves a trailing space the centring counts, so this
+   sits 2.5px right of the number below it to land on the same optical axis */
+.loved .lby{position:absolute;left:66.5px;top:.5px;width:120px;text-align:center;white-space:nowrap;
+  color:#fff;font-family:'Manrope',sans-serif;font-weight:600;font-size:6px;letter-spacing:2.03px}
+.loved .n1{position:absolute;left:64px;top:14.4px;width:120px;text-align:center;white-space:nowrap;
+  color:#fff;font-family:var(--font-card);font-weight:700;font-size:21.97px;line-height:.86;
+  letter-spacing:-.44px}
+.loved .n1 .u{display:block;font-weight:400}
+.loved .n2{position:absolute;left:226px;top:1.5px;width:120px;text-align:center;white-space:nowrap;
+  color:#fff;font-family:var(--font-card);font-weight:700;font-size:20.7px;line-height:1.14}
+.loved .n2 .u{display:block;font-weight:400;font-size:10.57px;line-height:1.1}
+.loved .stars{position:absolute;left:255px;top:42px;width:62.5px;height:9.6px}
+.loved .stars img{display:block;width:100%;height:100%}
+
+.award{position:absolute;left:0;top:1412.65px;width:412px;height:160px;z-index:6}
+.award .tro{position:absolute;left:49.46px;top:0;width:150.05px;height:150.05px;overflow:hidden}
+.award .tro img{position:absolute;left:0;top:-8.33%;width:108.79%;height:108.33%;max-width:none;display:block}
+.award .txt{position:absolute;right:55px;top:21px;text-align:right}
+.award .txt p{margin:0;font-family:var(--id)}
+.award .a1{font-weight:400;font-size:12.8px;line-height:1.35;color:var(--award-l);
+  transition:color var(--t) var(--te)}
+.award .a2{font-weight:700;font-size:24px;line-height:30px;letter-spacing:-.4px;color:#fff}
+
+.trow{position:absolute;left:0;top:1566px;width:412px;height:372.25px;display:flex;gap:11.8px;
+  padding:0 40.93px;overflow-x:auto;overflow-y:hidden;z-index:6;
+  scroll-snap-type:x mandatory;scroll-padding-left:40.93px;scrollbar-width:none}
+.trow::-webkit-scrollbar{display:none}
+.tcard{position:relative;flex:none;width:294.1px;height:372.25px;border-radius:32px;scroll-snap-align:start}
+.tcard .in{position:absolute;left:24.76px;top:27.12px;width:244.59px;display:flex;flex-direction:column;
+  align-items:center}
+.tcard .av{flex:none;width:117.65px;height:117.65px;border-radius:13.45px;overflow:hidden;position:relative;
+  border:2.94px solid rgba(99,77,51,.42)}
+.tcard .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;max-width:none}
+.tcard .q{margin:20.6px 0 0;width:244.59px;text-align:center;font-family:var(--font-card);font-weight:600;
+  font-size:15.69px;line-height:25.49px;color:var(--quote);transition:color var(--t) var(--te)}
+.tcard .who{margin-top:18.6px;text-align:center;font-family:'Urbanist',sans-serif;font-weight:700;
+  font-style:italic;white-space:nowrap}
+.tcard .nm{display:block;font-size:19.6px;line-height:31.4px;color:var(--name);
+  transition:color var(--t) var(--te)}
+.tcard .ro{display:block;margin-top:-5.8px;font-size:11.77px;line-height:31.4px;color:var(--role);
+  transition:color var(--t) var(--te)}
+
+/* ── FAQ ────────────────────────────────────────────────────────────
+   The export only draws the collapsed state. The answers are written in
+   `design.js` so the rows do something; the block is the last thing on the
+   page, so opening one only grows the page rather than moving anything above. */
+.faq{position:absolute;left:0;top:2035px;width:412px;z-index:6}
+.fq{position:relative;width:412px;padding:0 58px 0 47px;cursor:pointer}
+.fq .row{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  min-height:52px;padding:11px 0}
+.fq p{margin:0;font-family:var(--id);font-size:13.8px;font-weight:400;line-height:20px;
+  color:#fff;white-space:pre-line}
+.fq .cv{flex:none;width:11.5px;height:7.8px;color:#fff;
+  transition:transform 260ms cubic-bezier(.32,.72,0,1)}
+.fq.open .cv{transform:rotate(180deg)}
+.fq .ans{overflow:hidden;transition:height 280ms cubic-bezier(.32,.72,0,1)}
+.fq .ans p{padding:0 0 12px;font-size:12.5px;line-height:19px;font-weight:400;color:var(--faq-a);
+  white-space:normal;transition:color var(--t) var(--te)}
+.fqr{width:300.4px;height:1px;margin:0 auto;opacity:.5;
+  background:linear-gradient(90deg,rgba(var(--key-rgb),0),rgba(var(--key-rgb),1) 51%,rgba(var(--key-rgb),0));
+  transition:background-image var(--t) var(--te)}
+
+/* ── the pinned sheet ───────────────────────────────────────────────
+   242px: reassurance line, the two plans, the CTA and the home indicator. It
+   is the page's own bottom block in the export, pinned here so it stays on
+   screen — the page reserves exactly its height as bottom padding, which is
+   why the scroll length still comes out at the export's 2558. */
+.sheet{position:absolute;left:0;bottom:0;width:412px;height:242px;z-index:40;
+  border-radius:18px 18px 0 0;background-image:var(--sheet);
+  border-top:1px solid var(--sheet-bd);
+  transition:background-image var(--t) var(--te),border-color var(--t) var(--te)}
+/* The export's blurred bar on the sheet's top edge — drawn *under* the sheet,
+   which is the whole point of it: the sheet is opaque, so all that survives is
+   the 20px of blur reaching up past its edge. Painted over the sheet instead
+   it turns the top of the price area into a washed-out band. */
+.halo{position:absolute;left:-2.5px;bottom:217.87px;width:417px;height:14.14px;z-index:39;
+  background:var(--sheet-glow);opacity:.5;filter:blur(20.3px);pointer-events:none;
+  transition:background-color var(--t) var(--te)}
+
+.trust{position:absolute;left:0;top:10.5px;width:412px;
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  font-family:var(--id);font-size:12px;font-weight:500;letter-spacing:-.1px;color:#fff}
+.trust svg{flex:none;width:12.5px;height:12.5px}
+
+.plan{position:absolute;top:42.5px;height:77px;border-radius:11.5px;cursor:pointer;
+  padding:13.6px 0 0 14px;background:none;border:0;text-align:left;
+  display:flex;flex-direction:column;align-items:flex-start}
+.plan.a{left:19.15px;width:183px}
+.plan.b{left:210.29px;width:182px}
+/* selected: the export's conic ring. Unselected: a flat hairline. */
+/* the selected card's ring is ~1.9px of *inside* stroke in the export, twice
+   the unselected card's hairline — the width is half of what marks it */
+.plan .rim{position:absolute;inset:0;border-radius:inherit;padding:1.9px;pointer-events:none;
+  background-image:var(--planA-edge);opacity:0;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  transition:opacity 180ms var(--te),background-image var(--t) var(--te)}
+.plan.sel .rim{opacity:1}
+.plan .flat{position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  border:.96px solid var(--planB-bd);transition:border-color var(--t) var(--te),opacity 180ms var(--te)}
+.plan.sel .flat{opacity:0}
+.plan .hd{display:flex;align-items:center;gap:6px;height:18.75px}
+.plan .nm{font-family:var(--id);font-size:8.8px;font-weight:500;letter-spacing:.5px;color:#fff;
+  white-space:nowrap}
+.plan .off{display:flex;align-items:center;height:18.75px;padding:0 5.5px;border-radius:5.75px;
+  background-image:var(--badge);color:var(--badge-fg);
+  font-family:var(--id);font-size:8.6px;font-weight:600;letter-spacing:.2px;white-space:nowrap;
+  transition:background-image var(--t) var(--te),color var(--t) var(--te)}
+.plan .pr{margin-top:6px;font-family:var(--id);font-size:19px;font-weight:600;letter-spacing:-.3px;
+  color:#fff;line-height:1}
+
+.cta{position:absolute;left:14.98px;top:137.5px;width:382px;height:54px;border-radius:27px;border:0;
+  padding:0;cursor:pointer;background-image:var(--cta);
+  box-shadow:-8px 11px 12px rgba(15,13,37,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Manrope',sans-serif;font-size:17.25px;font-weight:600;letter-spacing:-.17px;
+  color:var(--cta-fg);
+  transition:background-image var(--t) var(--te),color var(--t) var(--te)}
+.sheet .home{position:absolute;left:141.58px;top:219.5px;width:128.38px;height:4.79px;border-radius:2.4px;
+  background:#fff}
+
+/* ── prototype controls ─────────────────────────────────────────────*/
+.panel{position:fixed;right:12px;bottom:12px;z-index:99;font-family:var(--id);font-size:11px;
+  background:rgba(18,18,24,.9);border:1px solid rgba(255,255,255,.13);border-radius:12px;
+  padding:9px 11px;display:flex;flex-direction:column;gap:7px;color:#cfcfd6;backdrop-filter:blur(8px)}
+.panel .r{display:flex;gap:6px;align-items:center}
+.panel button{font:inherit;color:#cfcfd6;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:3px 8px;cursor:pointer}
+.panel button.on{background:#5C81FA;border-color:#5C81FA;color:#fff}
+.panel input[type=range]{width:150px}
+
+@media (prefers-reduced-motion:reduce){
+  .seg .thumb,.tbl .hl,.fq .cv,.fq .ans{transition-duration:1ms}
+  .tint,.s1,.s2,.s3,.s4,.s5{transition-delay:0ms}
+}
