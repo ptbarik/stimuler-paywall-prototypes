@@ -52,17 +52,33 @@ const ms = (n) => n / 1000
 const N = 9          // points
 const R = 78         // outer radius
 const RI = 57.5      // waist
-const RINGS = 5
 const VB = 220       // the viewBox the two radii are quoted in
 
-export default function StarburstOffer({ t, run = 0, size = 244 }) {
+/**
+ * The contour rings, as multiples of the badge's own radius.
+ *
+ * Seven, evenly spaced, out to 1.8× — they are the badge's *field*, not a rim
+ * around it, and a field has to be visibly wider than the thing making it.
+ * Even spacing is the point of stating them as radii: the old formulation
+ * bunched the first three inside 1.08× where they could not be told apart.
+ *
+ * They deliberately overrun the block's box. `overflow: visible` on the svg
+ * lets the outer rings spill past the 276 the badge reserves, which is the
+ * whole effect: they pass behind the timer below and under the header's blur
+ * above at 3–4% opacity, so the offer sits *in* the page rather than in a
+ * panel on top of it. Nothing is clipped — the phone is 412 wide and the
+ * widest ring is ~358.
+ */
+const RINGS = [1.04, 1.17, 1.30, 1.43, 1.55, 1.68, 1.80]
+
+export default function StarburstOffer({ t, run = 0, size = 276 }) {
   const uid = useId().replace(/:/g, '')
   const g = useMemo(() => {
     const pts = ring(N, R, RI)
     return {
       path: roundedPath(pts, 7, 17),
       facets: facets(pts),
-      rings: Array.from({ length: RINGS }, (_, i) => contour(N, R, RI, 0.25 + i * 0.42, i)),
+      rings: RINGS.map((mult, i) => contour(N, R, RI, mult, i)),
     }
   }, [])
 
@@ -103,10 +119,13 @@ export default function StarburstOffer({ t, run = 0, size = 244 }) {
                 stroke="#fff"
                 strokeWidth={1}
                 initial={{ opacity: 0, scale: 0.35 }}
-                animate={{ opacity: [0, 0.13, 0.055], scale: [0.35, 1.06, 1] }}
+                animate={{
+                  opacity: [0, 0.17 - i * 0.012, 0.092 - i * 0.009],
+                  scale: [0.35, 1.06, 1],
+                }}
                 transition={{
                   duration: 1.15,
-                  delay: ms(T.rings) + i * 0.075,
+                  delay: ms(T.rings) + i * 0.07,
                   ease: [0.16, 0.8, 0.24, 1],
                   times: [0, 0.55, 1],
                 }}

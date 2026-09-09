@@ -84,24 +84,33 @@ export function facets(pts, cx = 0, cy = 0, light = -2.2) {
 /**
  * The topographic contours behind the badge.
  *
- * The reference has faint concentric outlines that are *not* circles — they
- * are the badge's own silhouette, relaxed a little further out at each step
- * and wobbled so they read as contour lines rather than as a target. `wobble`
- * rides a second harmonic so no two rings sit parallel.
+ * The reference has faint concentric outlines that are *not* circles — they are
+ * the badge's own silhouette, pushed further out at each step and relaxing
+ * toward a circle as they travel, so the field reads as contour lines rather
+ * than as a target.
+ *
+ * `mult` is the ring's outer radius **as a multiple of the badge's own** —
+ * `1` traces the badge exactly, `1.8` sits 80% beyond it. Stated that way on
+ * purpose: how far the rings reach past the badge is the one thing about them
+ * anybody ever wants to change, and it should not require solving for it.
+ *
+ * The relaxation is capped at 0.75 rather than 1 so even the outermost ring
+ * keeps a slow undulation. A ring that has gone fully circular stops belonging
+ * to the badge and starts looking like a halo someone drew around it.
  */
-export function contour(n, R, r, k, seedIdx) {
+export function contour(n, R, r, mult, seedIdx) {
   const pts = []
   const steps = n * 2 * 6
+  const flat = Math.min(0.75, Math.max(0, mult - 1))
   for (let i = 0; i < steps; i++) {
     const t = i / steps
     const a = -Math.PI / 2 + t * Math.PI * 2
-    /* the star's radius as a smooth wave rather than a polygon, flattened
-       toward a circle as the rings travel out */
+    /* the star's radius as a smooth wave rather than a polygon, normalised so
+       its peak is 1 and `mult` alone sets how far out the ring sits */
     const wave = (Math.cos(a * n) + 1) / 2
-    const base = r + (R - r) * Math.pow(wave, 0.7)
-    const relax = 1 - Math.min(k, 1) * 0.55
-    const rad = (base * relax + R * k * 0.62) *
-      (1 + 0.018 * Math.sin(a * (n + 2) + seedIdx * 1.7))
+    const silhouette = (r + (R - r) * Math.pow(wave, 0.7)) / R
+    const relaxed = 1 - (1 - silhouette) * (1 - flat)
+    const rad = R * mult * relaxed * (1 + 0.018 * Math.sin(a * (n + 2) + seedIdx * 1.7))
     pts.push([rad * Math.cos(a), rad * Math.sin(a)])
   }
   return 'M' + pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join('L') + 'Z'

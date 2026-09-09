@@ -103,11 +103,16 @@ export default function Paywall({ variant, tier, onTier, run, onReplay, scale = 
           to 196 rather than filling the space the coupon left: swapping the
           block is allowed to change what the offer *is*, not the rhythm the
           rest of the page is set to.
+
+          V2's badge is 276 and its contour rings reach half again past that,
+          overrunning the block's box on purpose — see `StarburstOffer.jsx`.
+          The rings are the only thing on the page allowed outside its own
+          slot, and they are at 3–9% opacity precisely so that is affordable.
         */}
         <div className="flex flex-col items-center">
           {variant === 'v1'
             ? <CouponTicket key={k} run={run} width={250} />
-            : <StarburstOffer key={k} t={t} run={run} size={196} />}
+            : <StarburstOffer key={k} t={t} run={run} size={276} />}
         </div>
 
         <div style={{ marginTop: variant === 'v1' ? 22 : 26 }}>

@@ -94,10 +94,27 @@ and the figure is arrival.
 `For limited time only` subtitle here. The badge says `50% OFF` and the heading
 two intervals down says `Limited Time 50% Offer Today` — the label was a third
 statement of the same fact, and the one with nothing to add. The height it
-freed went into the badge, not into whitespace: it is 244 rather than 196, and
+freed went into the badge, not into whitespace: it is 276 rather than 196, and
 the figure inside is a *fraction* of that (19.5%) rather than a fixed size, so
 growing the badge gave the number margin against the waist instead of taking
 it away.
+
+**The contour rings are the badge's field, and they overrun its box.** Seven of
+them, evenly spaced out to 1.8× the badge's own radius — about 358px across
+inside a 412 phone. They spill past the 276 the block reserves on purpose: they
+pass behind the timer below and under the header's blur above at 3–9% opacity,
+which is what makes the offer sit *in* the page instead of in a panel on top of
+it. They are the only thing on the page allowed outside its own slot, and the
+opacity is what makes that affordable.
+
+`contour()` takes the ring's radius **as a multiple of the badge's** rather
+than an abstract spread factor, because how far the rings reach past the badge
+is the one thing about them anybody ever wants to change and it should not
+require solving for it. Stating them as radii is also what fixed their spacing
+— under the old formulation the first three all landed inside 1.08× and could
+not be told apart. The relaxation toward a circle is capped at 0.75 so even the
+outermost keeps a slow undulation: a ring that has gone fully circular stops
+belonging to the badge and starts looking like a halo drawn around it.
 
 The whole timeline is one object at the top of `StarburstOffer.jsx`, so the
 numbers quoted above and the numbers that run cannot drift apart.
