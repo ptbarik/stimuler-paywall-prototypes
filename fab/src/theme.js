@@ -76,7 +76,6 @@ export const PRO = {
   starB: '#E1C13C',
   starBAlpha: 0.85,
   spark: '#B9B0FF',
-  seedDot: '#E1C13C',
 }
 
 /* ── Stimuler PRO+ — gold ───────────────────────────────────────── */
@@ -135,7 +134,6 @@ export const PLUS = {
   starB: '#FF9803',
   starBAlpha: 0.5,
   spark: '#FFE292',
-  seedDot: '#FF9803',
 }
 
 export const THEMES = { pro: PRO, plus: PLUS }

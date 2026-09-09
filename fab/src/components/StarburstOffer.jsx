@@ -8,46 +8,59 @@ import { OFFER } from '../copy.js'
  * V2's offer block — the coupon's replacement.
  *
  * The motion is the StressWatch pricing shot's anatomy, rebuilt rather than
- * copied: a seed dot sits alone, springs open into a faceted rosette that
- * lands with one overshoot, a second rosette behind it counter-rotates in,
- * topographic rings blow out past the edge and fade, and only then does the
- * figure inside and the struck-through old price fade up. Nothing of that
- * shot's colour, copy or layout is here — the geometry is `starburst.js`, the
- * palette is the tier's, and the block sits in the paywall's own rhythm.
+ * copied: a faceted rosette arrives, a second one counter-rotates in behind
+ * it, topographic rings settle around them, the figure fades up, and the pair
+ * then turn against each other forever. Nothing of that shot's colour, copy or
+ * layout is here — the geometry is `starburst.js`, the palette is the tier's,
+ * and the block sits in the paywall's own rhythm.
  *
- * ── the two decisions worth defending ─────────────────────────────
+ * ── the entrance ──────────────────────────────────────────────────
  *
- * **The dot is the badge, not a placeholder for it.** It is `seedDot` at 7px,
- * which is the back rosette's fill; when the spring fires, the thing that
- * grows is already on screen. That is what makes the entry read as one object
- * arriving rather than two objects swapping.
+ * **It arrives as itself, at size.** There was a seed dot here that scaled up
+ * into the badge, and it read as a loading spinner resolving rather than as an
+ * object turning up — the eye spends the first 300ms asking what the dot *is*
+ * instead of reading the offer. The entrance is now V1's, beat for beat: up
+ * from below its own slot, already legible as a rosette, tipped, landing on
+ * one overshoot. Both versions answer *how does the discount get here* the
+ * same way now, so the comparison between them is about the object and not
+ * about its arrival.
  *
- * **The figure lands late, and after the overshoot.** `50%` fades at 520ms,
- * which is past the badge's own settle. Overlapping them puts two things
- * overshooting in the same 200ms and the result reads as bounce; separated,
- * the badge is weight and the figure is arrival.
+ * **The figure lands late, and after the overshoot.** `50%` fades at 440ms,
+ * past the badge's own settle. Overlapping them puts two things overshooting
+ * in the same 200ms and the result reads as bounce; separated, the badge is
+ * weight and the figure is arrival.
  *
- * ── on the label that used to sit above it ────────────────────────
+ * ── the idle ──────────────────────────────────────────────────────
  *
- * There was a `✦ WELCOME OFFER ✦` line and a `For limited time only` subtitle
- * here. Both are gone. The badge says `50% OFF` and the heading two intervals
- * down says `Limited Time 50% Offer Today` — the label was a third statement
- * of the same fact, and it was the one with nothing to add. The height it
- * freed went into the badge rather than into whitespace, which is why the
- * figure now has margin inside the rosette instead of touching its waist.
+ * The two rosettes turn against each other, slowly and forever — the front
+ * clockwise on 80s, the back counter on 110s. Opposed rather than together
+ * because two shapes rotating the same way at different speeds read as one
+ * shape with a rendering bug; opposed, they read as two objects.
+ *
+ * A full 360° rather than the 40° the nine-fold silhouette would allow: the
+ * facet shading is fixed to the shape and turns with it, so only a whole
+ * revolution puts every facet back where it started. Anything less loops with
+ * a visible jump in the lighting.
+ *
+ * The cast shadow is deliberately *outside* both spins. A drop shadow that
+ * rotates with its object swings its offset around the badge like a clock
+ * hand, which is the one thing that would give away that this is a flat shape
+ * being turned rather than an object with a light above it.
  */
 
 /* Timing, in ms from the block being told to play. Kept as one object so the
    numbers quoted in the README and the numbers that run cannot drift. */
 const T = {
-  seed: 0,
-  pop: 300,
-  rings: 350,
-  figure: 520,
-  off: 600,
-  idle: 1500,
+  pop: 100,
+  rings: 260,
+  figure: 440,
+  off: 520,
+  idle: 1200,
 }
 const ms = (n) => n / 1000
+
+/* the idle turn: seconds for one full revolution, front and back */
+const SPIN = { front: 80, back: 110 }
 
 const N = 9          // points
 const R = 78         // outer radius
@@ -57,17 +70,22 @@ const VB = 220       // the viewBox the two radii are quoted in
 /**
  * The contour rings, as multiples of the badge's own radius.
  *
- * Five, out to 1.64× — the count and the reach the design settled on. Seven
- * was tried and read as noise: past about five the rings stop being a field
- * the badge sits in and start being a pattern in their own right, competing
- * with the figure they exist to frame.
+ * Three, a clean 0.25 apart, from 1.12 out to 1.62. Five and seven were both
+ * tried: past three they stop being a field the badge sits in and become a
+ * pattern in their own right, competing with the figure they exist to frame.
+ * Three is also what lets them be spaced *widely* — at five, fitting the same
+ * reach meant 0.15 steps, and adjacent rings that close read as a single
+ * thick, fuzzy edge rather than as separate contours.
+ *
+ * The innermost starts at 1.12 rather than hugging the badge at 1.04, where it
+ * would have read as an outline drawn on the rosette instead of the first line
+ * of something around it.
  *
  * They are stated as radii rather than as an abstract spread factor because
  * how far they reach past the badge is the one thing about them anybody ever
- * wants to change. That also fixed their spacing — the original formulation
- * bunched the first three inside 1.08× where they could not be told apart.
+ * wants to change, and it should not require solving for it.
  */
-const RINGS = [1.04, 1.19, 1.34, 1.49, 1.64]
+const RINGS = [1.12, 1.37, 1.62]
 
 /**
  * `size` is the svg's box. `slot` is how much column the block *claims*.
@@ -85,8 +103,8 @@ const RINGS = [1.04, 1.19, 1.34, 1.49, 1.64]
  *
  * That is the trade, stated plainly: the offer got bigger by overrunning its
  * slot rather than by claiming more of one. Claiming more would have cost the
- * feature card its glimpse, which is worth more than the two faint rings that
- * now cross a countdown.
+ * feature card its glimpse, which is worth more than one faint ring crossing a
+ * countdown.
  */
 export default function StarburstOffer({ t, run = 0, size = 276, slot = 196 }) {
   const uid = useId().replace(/:/g, '')
@@ -105,8 +123,38 @@ export default function StarburstOffer({ t, run = 0, size = 276, slot = 196 }) {
   const pct = size * 0.195
   const off = size * 0.063
 
+  /* V1's landing, in one place: the rosettes and their shadow ride the same
+     spring, so they arrive as one object rather than three.
+
+     It starts at 0.52 rather than V1's 0.34. The ticket is 250 wide and reads
+     as a ticket at a third of that; the rosette is 196 and at a third it is a
+     70px blob with its own blurred shadow around it — indistinguishable from
+     the seed dot this entrance replaced. Half size is the point where the nine
+     lobes are still countable, which is what makes the first frame an object
+     rather than a shape resolving. */
+  const land = {
+    /* the fade is short and starts ahead of the spring on purpose. At 0.22s it
+       was still under half opaque at 150ms, and a half-opaque badge over this
+       ground is a pale blob — the exact read the seed dot was removed for. The
+       shape has to be solid before it has finished travelling. */
+    opacity: { duration: 0.13, delay: ms(T.pop) - 0.05 },
+    default: { type: 'spring', visualDuration: 0.62, bounce: 0.5, delay: ms(T.pop) },
+  }
+  const origin = { transformOrigin: '50% 50%' }
+
   return (
     <div className="relative flex items-center justify-center" style={{ width: '100%', height: slot }}>
+      {/*
+        V1's ticket lands on a soft glow pulse; this one does not, and the
+        reason is that the two blocks are different shapes. The ticket is
+        opaque paper, so a bloom underneath reads as light bouncing off a
+        surface. The badge spends its first 300ms small, and a bloom sized to
+        the *landed* badge is three times the width of the rising one — the
+        halo swallows the object it is supposed to be lighting. The cast
+        shadow below is `starA`'s darkest stop, which on this ground already
+        reads as a bloom, and it scales with the badge because it is drawn in
+        the same coordinate space.
+      */}
       <div className="absolute" style={{ width: size, height: size, left: '50%', top: '50%', marginLeft: -size / 2, marginTop: -size / 2 }}>
         <svg viewBox={`${-VB / 2} ${-VB / 2} ${VB} ${VB}`} width={size} height={size}
              style={{ overflow: 'visible', display: 'block' }}>
@@ -122,11 +170,11 @@ export default function StarburstOffer({ t, run = 0, size = 276, slot = 196 }) {
             </radialGradient>
             <clipPath id={`${uid}c`}><path d={g.path} /></clipPath>
             <filter id={`${uid}s`} x="-60%" y="-60%" width="220%" height="220%">
-              <feDropShadow dx="0" dy="10" stdDeviation="14" floodColor={c2} floodOpacity=".45" />
+              <feGaussianBlur stdDeviation="13" />
             </filter>
           </defs>
 
-          {/* topographic rings — out past the badge, then held faint */}
+          {/* the contour field */}
           <g>
             {g.rings.map((d, i) => (
               <motion.path
@@ -135,60 +183,66 @@ export default function StarburstOffer({ t, run = 0, size = 276, slot = 196 }) {
                 fill="none"
                 stroke="#fff"
                 strokeWidth={1}
-                initial={{ opacity: 0, scale: 0.35 }}
+                initial={{ opacity: 0, scale: 0.72 }}
                 animate={{
-                  opacity: [0, 0.15 - i * 0.012, 0.078 - i * 0.008],
-                  scale: [0.35, 1.06, 1],
+                  opacity: [0, 0.16 - i * 0.03, 0.085 - i * 0.017],
+                  scale: [0.72, 1.04, 1],
                 }}
                 transition={{
                   duration: 1.15,
-                  delay: ms(T.rings) + i * 0.07,
+                  delay: ms(T.rings) + i * 0.09,
                   ease: [0.16, 0.8, 0.24, 1],
                   times: [0, 0.55, 1],
                 }}
-                style={{ transformOrigin: '50% 50%' }}
+                style={origin}
               />
             ))}
           </g>
 
-          {/* the back rosette — counter-rotates in, then drifts */}
+          {/* the cast shadow — rides the landing, sits out both spins */}
+          <motion.g
+            key={`${run}-sh`}
+            style={origin}
+            initial={{ opacity: 0, scale: 0.52, y: 22 }}
+            animate={{ opacity: 0.45, scale: 1, y: 0 }}
+            transition={land}
+          >
+            <g transform="translate(0,11)">
+              <path d={g.path} fill={c2} filter={`url(#${uid}s)`} />
+            </g>
+          </motion.g>
+
+          {/* the back rosette */}
           <motion.g
             key={`${run}-b`}
-            style={{ transformOrigin: '50% 50%' }}
-            initial={{ scale: 0.06, rotate: -46, opacity: 0 }}
-            animate={{ scale: 1.02, rotate: -11, opacity: t.starBAlpha }}
-            transition={{
-              scale: { type: 'spring', visualDuration: 0.7, bounce: 0.4, delay: ms(T.pop) },
-              rotate: { type: 'spring', visualDuration: 0.8, bounce: 0.3, delay: ms(T.pop) },
-              opacity: { duration: 0.18, delay: ms(T.pop) },
-            }}
+            style={origin}
+            initial={{ opacity: 0, scale: 0.52, y: 22, rotate: -40 }}
+            animate={{ opacity: t.starBAlpha, scale: 1.02, y: 0, rotate: -11 }}
+            transition={land}
           >
             <motion.path
               d={g.path}
               fill={t.starB}
-              animate={{ rotate: [-11, -15, -11] }}
-              transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: ms(T.idle) }}
-              style={{ transformOrigin: '50% 50%' }}
+              animate={{ rotate: [0, -360] }}
+              transition={{ duration: SPIN.back, repeat: Infinity, ease: 'linear', delay: ms(T.idle) }}
+              style={origin}
             />
           </motion.g>
 
           {/* the front rosette — the one that carries the figure */}
           <motion.g
             key={`${run}-f`}
-            style={{ transformOrigin: '50% 50%' }}
-            initial={{ scale: 0.05, rotate: 38 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{
-              scale: { type: 'spring', visualDuration: 0.62, bounce: 0.46, delay: ms(T.pop) },
-              rotate: { type: 'spring', visualDuration: 0.75, bounce: 0.32, delay: ms(T.pop) },
-            }}
+            style={origin}
+            initial={{ opacity: 0, scale: 0.52, y: 22, rotate: 24 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+            transition={land}
           >
             <motion.g
-              animate={{ rotate: [0, 3.2, 0], scale: [1, 1.016, 1] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: ms(T.idle) }}
-              style={{ transformOrigin: '50% 50%' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: SPIN.front, repeat: Infinity, ease: 'linear', delay: ms(T.idle) }}
+              style={origin}
             >
-              <path d={g.path} fill={`url(#${uid}f)`} filter={`url(#${uid}s)`} />
+              <path d={g.path} fill={`url(#${uid}f)`} />
               {/* one triangle per half-lobe: the low-poly cut */}
               <g clipPath={`url(#${uid}c)`}>
                 {g.facets.map((f, i) => (
@@ -205,17 +259,8 @@ export default function StarburstOffer({ t, run = 0, size = 276, slot = 196 }) {
           </motion.g>
         </svg>
 
-        {/* the seed. Sits alone, then hands over to the spring. */}
-        <motion.span
-          key={`${run}-seed`}
-          className="absolute rounded-full"
-          style={{ width: 7, height: 7, left: '50%', top: '50%', marginLeft: -3.5, marginTop: -3.5, background: t.seedDot }}
-          initial={{ opacity: 1, scale: 1 }}
-          animate={{ opacity: 0, scale: 2.4 }}
-          transition={{ duration: 0.22, delay: ms(T.pop) }}
-        />
-
-        {/* the figure */}
+        {/* the figure. Outside the svg, so it never turns with the rosette —
+            a discount that rotates is a discount nobody can read. */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <motion.span
             key={`${run}-pct`}

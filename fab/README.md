@@ -64,13 +64,12 @@ from their base64 rather than re-sourced.
 
 ## Version 2 — what the badge is doing
 
-The motion is the StressWatch pricing shot's anatomy, rebuilt: a seed dot sits
-alone, springs open into a faceted rosette that lands on one overshoot, a
-second rosette counter-rotates in behind it, topographic rings blow out past
-the edge and settle faint, and only then does the figure inside and the
-struck-through old price fade up. None of that shot's colour, copy, layout or
-assets are here — the geometry is generated in `starburst.js` and the palette
-is the tier's own.
+The motion is the StressWatch pricing shot's anatomy, rebuilt: a faceted
+rosette arrives, a second one counter-rotates in behind it, topographic rings
+settle around them, the figure and the struck-through old price fade up, and
+the two rosettes then turn against each other forever. None of that shot's
+colour, copy, layout or assets are here — the geometry is generated in
+`starburst.js` and the palette is the tier's own.
 
 **The rosette is generated, not exported.** Two radii, a corner radius and a
 point count; every fill downstream is a function of the same vertex ring. The
@@ -80,12 +79,37 @@ as one solid, and when it spins, its shading spins with it. That is the part
 that would have been impossible with a flat export, and it is the reason the
 entry reads as an object turning rather than an image scaling.
 
-**The dot is the badge, not a placeholder for it.** It is 7px of the back
-rosette's own fill; when the spring fires, the thing that grows is already on
-screen. That is what makes the entry read as one object arriving rather than
-two objects swapping.
+**It arrives as itself, at size.** There was a seed dot here that scaled up
+into the badge, and it read as a loading spinner resolving rather than as an
+object turning up — the eye spends the first 300ms asking what the dot *is*
+instead of reading the offer. The entrance is now V1's, beat for beat: up from
+below its own slot, already legible as a rosette, tipped, landing on one
+overshoot. Both versions answer *how does the discount get here* the same way,
+so the comparison between them is about the object and not about its arrival.
 
-**The figure lands late, and after the overshoot.** `50%` fades at 520ms, past
+It starts at half size rather than V1's third. The ticket is 250 wide and reads
+as a ticket at a third of that; the rosette is 196, and at a third it is a 70px
+blob with its own blurred shadow around it — indistinguishable from the seed
+dot the entrance replaced. Half is where the nine lobes are still countable.
+The fade is 130ms and starts *ahead* of the spring for the same reason: at
+220ms the badge was still under half opaque while already travelling, and a
+half-opaque badge on this ground is exactly the pale blob being avoided.
+
+**The two rosettes turn against each other, forever.** Front clockwise on 80s,
+back counter on 110s. Opposed rather than together, because two shapes rotating
+the same way at different speeds read as one shape with a rendering bug;
+opposed, they read as two objects. A full 360° rather than the 40° the
+nine-fold silhouette would allow — the facet shading is fixed to the shape and
+turns with it, so only a whole revolution puts every facet back where it
+started, and anything less loops with a visible jump in the lighting.
+
+The cast shadow sits *outside* both spins. A drop shadow that rotates with its
+object swings its offset around the badge like a clock hand, which is the one
+thing that would give away a flat shape being turned rather than an object with
+a light above it. The figure is outside the spin too, in HTML over the svg — a
+discount that rotates is a discount nobody can read.
+
+**The figure lands late, and after the overshoot.** `50%` fades at 440ms, past
 the badge's own settle. Overlapping them puts two things overshooting inside
 the same 200ms and the result reads as bounce; separated, the badge is weight
 and the figure is arrival.
@@ -109,12 +133,17 @@ So the field reaches ~320, passing behind the timer below and under the
 header's blur above at 4–8% opacity — while the timer, the heading and the
 feature card stay on the lines V1 puts them on, and the card keeps its glimpse
 above the price sheet in both versions. Claiming the column instead would have
-cost that glimpse, which is worth more than the two faint rings that now cross
+cost that glimpse, which is worth more than the one faint ring that now crosses
 a countdown.
 
-**Five rings, out to 1.64×.** Seven was tried and read as noise: past about
-five they stop being a field the badge sits in and become a pattern in their
-own right, competing with the figure they exist to frame.
+**Three rings, a clean 0.25 apart, from 1.12× out to 1.62×.** Five and seven
+were both tried: past three they stop being a field the badge sits in and
+become a pattern in their own right, competing with the figure they exist to
+frame. Three is also what lets them be spaced *widely* — at five, reaching the
+same distance meant 0.15 steps, and adjacent rings that close read as one
+thick, fuzzy edge rather than as separate contours. The innermost starts at
+1.12 rather than hugging the badge at 1.04, where it read as an outline drawn
+on the rosette instead of the first line of something around it.
 
 `contour()` takes the ring's radius **as a multiple of the badge's** rather
 than an abstract spread factor, because how far the rings reach past the badge
