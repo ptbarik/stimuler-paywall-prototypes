@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/* The Figma file is set in Google Sans, which is not self-hostable. Inter
+   Display is the match the earlier Stimuler paywall prototypes carry, so this
+   page sits with them rather than beside them; Poppins is the proof block's
+   own family and Urbanist signs the testimonials, both as the export has it. */
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url('/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url('/fonts/poppins-700.woff2') format('woff2')}
+
+:root{
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --pop:'Poppins',system-ui,-apple-system,sans-serif;
+}
+
+*{ -webkit-tap-highlight-color:transparent }
+html,body{ margin:0; background:#060509; }
+body{ font-family:var(--id); -webkit-font-smoothing:antialiased; }
+button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; color:inherit }
+
+.font-id{ font-family:var(--id) }
+.font-poppins{ font-family:var(--pop) }
+/* the testimonial signature is italic Poppins here — Urbanist is not carried
+   into this prototype, and the export's italic is the only thing it was doing */
+.font-urbanist{ font-family:var(--pop); font-style:italic }
+
+/* the phone scrolls; it does not advertise that it scrolls */
+.no-bar{ scrollbar-width:none; -ms-overflow-style:none }
+.no-bar::-webkit-scrollbar{ display:none; width:0; height:0 }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important }
+}

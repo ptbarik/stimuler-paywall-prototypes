@@ -11,9 +11,10 @@ two can be put side by side and compared.
 | [`iteration-b/`](iteration-b) | tier toggle **in the header** | https://stimuler-paywall-carousel-b.vercel.app |
 | [`roadmap/`](roadmap) | the roadmap paywall — one animation, one toggle | https://stimuler-roadmap-paywall.vercel.app |
 | [`premium/`](premium) | **the Premium tab flow** — nav → crown interstitial → paywall | https://stimuler-premium-tab.vercel.app |
+| [`fab/`](fab) | **the offer block, two ways** — coupon ticket vs starburst badge | https://stimuler-paywall-offer.vercel.app |
 
 ```bash
-cd premium            # or iteration-a, iteration-b, roadmap
+cd fab                # or premium, iteration-a, iteration-b, roadmap
 npm install
 npm run dev           # http://localhost:5173
 ```
