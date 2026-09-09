@@ -57,21 +57,38 @@ const VB = 220       // the viewBox the two radii are quoted in
 /**
  * The contour rings, as multiples of the badge's own radius.
  *
- * Seven, evenly spaced, out to 1.8× — they are the badge's *field*, not a rim
- * around it, and a field has to be visibly wider than the thing making it.
- * Even spacing is the point of stating them as radii: the old formulation
- * bunched the first three inside 1.08× where they could not be told apart.
+ * Five, out to 1.64× — the count and the reach the design settled on. Seven
+ * was tried and read as noise: past about five the rings stop being a field
+ * the badge sits in and start being a pattern in their own right, competing
+ * with the figure they exist to frame.
  *
- * They deliberately overrun the block's box. `overflow: visible` on the svg
- * lets the outer rings spill past the 276 the badge reserves, which is the
- * whole effect: they pass behind the timer below and under the header's blur
- * above at 3–4% opacity, so the offer sits *in* the page rather than in a
- * panel on top of it. Nothing is clipped — the phone is 412 wide and the
- * widest ring is ~358.
+ * They are stated as radii rather than as an abstract spread factor because
+ * how far they reach past the badge is the one thing about them anybody ever
+ * wants to change. That also fixed their spacing — the original formulation
+ * bunched the first three inside 1.08× where they could not be told apart.
  */
-const RINGS = [1.04, 1.17, 1.30, 1.43, 1.55, 1.68, 1.80]
+const RINGS = [1.04, 1.19, 1.34, 1.49, 1.64]
 
-export default function StarburstOffer({ t, run = 0, size = 276 }) {
+/**
+ * `size` is the svg's box. `slot` is how much column the block *claims*.
+ *
+ * They are separate on purpose, and the gap between them is this block's whole
+ * layout argument.
+ *
+ * The rosette's outer radius is 78 of the viewBox's 110, so at `size` 276 the
+ * badge itself draws 196 across — which is exactly `slot`. The badge fills the
+ * column it claims; the extra 80 of `size` is the margin the *rings* need, and
+ * they are allowed to spill out of it. So the field reaches ~320, passing
+ * behind the timer below and under the header's blur above, while the timer,
+ * the heading and the feature card stay on the lines V1 puts them on and the
+ * card keeps its glimpse above the price sheet.
+ *
+ * That is the trade, stated plainly: the offer got bigger by overrunning its
+ * slot rather than by claiming more of one. Claiming more would have cost the
+ * feature card its glimpse, which is worth more than the two faint rings that
+ * now cross a countdown.
+ */
+export default function StarburstOffer({ t, run = 0, size = 276, slot = 196 }) {
   const uid = useId().replace(/:/g, '')
   const g = useMemo(() => {
     const pts = ring(N, R, RI)
@@ -89,8 +106,8 @@ export default function StarburstOffer({ t, run = 0, size = 276 }) {
   const off = size * 0.063
 
   return (
-    <div className="relative flex flex-col items-center" style={{ width: '100%' }}>
-      <div className="relative" style={{ width: size, height: size }}>
+    <div className="relative flex items-center justify-center" style={{ width: '100%', height: slot }}>
+      <div className="absolute" style={{ width: size, height: size, left: '50%', top: '50%', marginLeft: -size / 2, marginTop: -size / 2 }}>
         <svg viewBox={`${-VB / 2} ${-VB / 2} ${VB} ${VB}`} width={size} height={size}
              style={{ overflow: 'visible', display: 'block' }}>
           <defs>
@@ -120,7 +137,7 @@ export default function StarburstOffer({ t, run = 0, size = 276 }) {
                 strokeWidth={1}
                 initial={{ opacity: 0, scale: 0.35 }}
                 animate={{
-                  opacity: [0, 0.17 - i * 0.012, 0.092 - i * 0.009],
+                  opacity: [0, 0.15 - i * 0.012, 0.078 - i * 0.008],
                   scale: [0.35, 1.06, 1],
                 }}
                 transition={{

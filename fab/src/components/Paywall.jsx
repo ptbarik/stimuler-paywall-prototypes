@@ -104,10 +104,11 @@ export default function Paywall({ variant, tier, onTier, run, onReplay, scale = 
           block is allowed to change what the offer *is*, not the rhythm the
           rest of the page is set to.
 
-          V2's badge is 276 and its contour rings reach half again past that,
-          overrunning the block's box on purpose — see `StarburstOffer.jsx`.
-          The rings are the only thing on the page allowed outside its own
-          slot, and they are at 3–9% opacity precisely so that is affordable.
+          V2's badge draws at 276 but claims only 244 — the height V1's coupon
+          claims — so both versions put the timer, the heading and the feature
+          card on the same lines and the card keeps its glimpse above the price
+          sheet in both. The badge and its rings overrun that slot on purpose;
+          see `StarburstOffer.jsx`.
         */}
         <div className="flex flex-col items-center">
           {variant === 'v1'

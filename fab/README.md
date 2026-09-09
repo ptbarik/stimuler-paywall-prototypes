@@ -93,28 +93,37 @@ and the figure is arrival.
 **The label above it is gone.** There was a `✦ WELCOME OFFER ✦` line and a
 `For limited time only` subtitle here. The badge says `50% OFF` and the heading
 two intervals down says `Limited Time 50% Offer Today` — the label was a third
-statement of the same fact, and the one with nothing to add. The height it
-freed went into the badge, not into whitespace: it is 276 rather than 196, and
-the figure inside is a *fraction* of that (19.5%) rather than a fixed size, so
-growing the badge gave the number margin against the waist instead of taking
-it away.
+statement of the same fact, and the one with nothing to add. The figure inside
+is a *fraction* of the badge (19.5%) rather than a fixed size, so growing the
+badge gives the number margin against the rosette's waist instead of taking it
+away.
 
-**The contour rings are the badge's field, and they overrun its box.** Seven of
-them, evenly spaced out to 1.8× the badge's own radius — about 358px across
-inside a 412 phone. They spill past the 276 the block reserves on purpose: they
-pass behind the timer below and under the header's blur above at 3–9% opacity,
-which is what makes the offer sit *in* the page instead of in a panel on top of
-it. They are the only thing on the page allowed outside its own slot, and the
-opacity is what makes that affordable.
+**The badge got bigger by overrunning its slot, not by claiming more of one.**
+`size` is the svg's box; `slot` is the column the block actually reserves. The
+rosette's outer radius is 78 of the viewBox's 110, so at `size` 276 the badge
+draws 196 across — which is exactly `slot`. The badge fills the column it
+claims; the extra 80 of `size` is the margin the *rings* need, and they spill
+out of it.
+
+So the field reaches ~320, passing behind the timer below and under the
+header's blur above at 4–8% opacity — while the timer, the heading and the
+feature card stay on the lines V1 puts them on, and the card keeps its glimpse
+above the price sheet in both versions. Claiming the column instead would have
+cost that glimpse, which is worth more than the two faint rings that now cross
+a countdown.
+
+**Five rings, out to 1.64×.** Seven was tried and read as noise: past about
+five they stop being a field the badge sits in and become a pattern in their
+own right, competing with the figure they exist to frame.
 
 `contour()` takes the ring's radius **as a multiple of the badge's** rather
 than an abstract spread factor, because how far the rings reach past the badge
 is the one thing about them anybody ever wants to change and it should not
 require solving for it. Stating them as radii is also what fixed their spacing
-— under the old formulation the first three all landed inside 1.08× and could
-not be told apart. The relaxation toward a circle is capped at 0.75 so even the
-outermost keeps a slow undulation: a ring that has gone fully circular stops
-belonging to the badge and starts looking like a halo drawn around it.
+— under the original formulation the first three all landed inside 1.08× and
+could not be told apart. The relaxation toward a circle is capped at 0.75 so
+even the outermost keeps a slow undulation: a ring that has gone fully circular
+stops belonging to the badge and starts looking like a halo drawn around it.
 
 The whole timeline is one object at the top of `StarburstOffer.jsx`, so the
 numbers quoted above and the numbers that run cannot drift apart.
