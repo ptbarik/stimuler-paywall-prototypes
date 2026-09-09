@@ -19,9 +19,15 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-`?v=1` and `?v=2` open a single version. Above 1080px wide both are up at once,
+`?v=1` and `?v=2` open a single version. Above 1024px wide both are up at once,
 side by side, on independent scrollers — which is the point: *which offer block*
 is a question you answer by looking at two of them, not by remembering one.
+
+**The frame always fits the window.** 412 × 892 is scaled to whatever is left
+after the header, measured off the DOM rather than assumed, so changing a word
+in the header cannot push the phone below the fold. That matters more than it
+sounds: the pinned CTA is one of the things being judged, and a paywall you
+have to scroll the *browser* to reach the bottom of cannot be judged at all.
 
 ## Where the numbers came from
 
@@ -79,13 +85,63 @@ rosette's own fill; when the spring fires, the thing that grows is already on
 screen. That is what makes the entry read as one object arriving rather than
 two objects swapping.
 
-**The figure lands late, and after the overshoot.** `50%` fades at 640ms, past
+**The figure lands late, and after the overshoot.** `50%` fades at 520ms, past
 the badge's own settle. Overlapping them puts two things overshooting inside
 the same 200ms and the result reads as bounce; separated, the badge is weight
 and the figure is arrival.
 
+**The label above it is gone.** There was a `✦ WELCOME OFFER ✦` line and a
+`For limited time only` subtitle here. The badge says `50% OFF` and the heading
+two intervals down says `Limited Time 50% Offer Today` — the label was a third
+statement of the same fact, and the one with nothing to add. The height it
+freed went into the badge, not into whitespace: it is 244 rather than 196, and
+the figure inside is a *fraction* of that (19.5%) rather than a fixed size, so
+growing the badge gave the number margin against the waist instead of taking
+it away.
+
 The whole timeline is one object at the top of `StarburstOffer.jsx`, so the
 numbers quoted above and the numbers that run cannot drift apart.
+
+## Version 1 — the pop
+
+The ticket arrives rather than appears: it comes up from below the fold of its
+own slot, small and tipped nine degrees, and lands on one overshoot. Three
+things do the work and they are deliberately not simultaneous.
+
+**The paper lands first, and alone.** Nothing else moves during its overshoot,
+so the bounce reads as the weight of a physical thing rather than a page full
+of elements springing at once.
+
+**The shine crosses on the settle, not on the landing.** It starts at 480ms,
+after the paper has stopped travelling, and runs at the hatch's own 35.64° so
+the two read as one surface. A highlight sweeping across something still in
+motion reads as a glitch; across something at rest it reads as paper catching
+the light, which is the entire argument for putting a discount on a ticket.
+
+**The figure is last and overshoots hardest.** `50% OFF` is the one number on
+the block that has to be read, so it is the one thing allowed a second bounce
+after everything else has settled.
+
+## The chrome
+
+**The toggle and the CTA are both pinned**, at the top and the bottom of the
+frame. The toggle is the first decision on the page and has to stay reachable
+while the comparison table is being read; the CTA is the last one and should
+never need to be scrolled to.
+
+Behind the toggle is a *masked* backdrop blur, not an opaque bar. A solid band
+would cut the frame in two at a fixed line and make it read as two panes; the
+mask lets the blur fall off to nothing over its last 45%, so content passing
+under it dissolves instead of meeting an edge. The wash on top is the page's
+own top stop, so the band is the background densified rather than a new colour
+laid over it — which is why it survives the tier switch without a second value.
+
+**The CTA carries a shine** crossing at 20°, 24% of the button wide, resting
+off the right-hand edge for two-thirds of its 4.2s cycle. A highlight that is
+always mid-crossing stops being an accent and becomes a spinner. It is a CSS
+keyframe rather than a spring because it is ambient — it reacts to nothing, and
+driving it from React would re-render the price sheet sixty times a second for
+a decoration.
 
 ## The one content difference
 
@@ -106,7 +162,7 @@ src/
   Icons.jsx                redrawn on a 24-grid — the export flattens its icons
   components/
     Paywall.jsx            the page, once. `variant` picks the offer block
-    CouponTicket.jsx       V1
+    CouponTicket.jsx       V1, and its pop
     StarburstOffer.jsx     V2, and its timeline
     Chrome.jsx             status bar, close, tier switch, timer
     Sections.jsx           features, table, proof, testimonials, FAQ, sheet

@@ -261,9 +261,22 @@ export function PriceSheet({ t, tier, variant, run }) {
           })}
         </div>
 
-        <button className="mx-auto mt-[10px] grid place-items-center rounded-full font-id transition-transform active:scale-[.985]"
-                style={{ width: 374, height: 54, background: t.buy, color: t.buyInk, fontSize: 18, fontWeight: 600, letterSpacing: '-.01em', boxShadow: '-8px 11px 12px rgba(15,13,37,.25)' }}>
-          {t.cta}
+        {/*
+          The CTA, with a shine crossing it on a slow loop.
+
+          The sweep is at 20° rather than vertical so it reads as light moving
+          across a surface rather than a bar wiping the button, and it rests
+          for most of its cycle — the highlight is 30% of the button wide and
+          spends ~3s of every 4.2 off the right-hand edge. A shine that is
+          always mid-crossing stops being an accent and becomes a spinner.
+
+          `--shine` is the tier's own highlight: white on PRO's indigo, and a
+          warm white on PRO+, because pure white over gold reads as a blowout.
+        */}
+        <button className="cta mx-auto mt-[10px] grid place-items-center rounded-full font-id relative overflow-hidden transition-transform active:scale-[.985]"
+                style={{ width: 374, height: 54, background: t.buy, color: t.buyInk, fontSize: 18, fontWeight: 600, letterSpacing: '-.01em', boxShadow: '-8px 11px 12px rgba(15,13,37,.25)', '--shine': t.shine, '--shine-core': t.shineCore }}>
+          <span className="relative z-10">{t.cta}</span>
+          <span className="cta-shine" aria-hidden="true" />
         </button>
       </div>
 

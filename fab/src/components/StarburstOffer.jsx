@@ -7,13 +7,13 @@ import { OFFER } from '../copy.js'
 /**
  * V2's offer block — the coupon's replacement.
  *
- * The motion is the StressWatch pricing shot's, rebuilt rather than copied:
- * a seed dot sits alone, springs open into a faceted rosette that lands with
- * one overshoot, a second rosette behind it counter-rotates in, topographic
- * rings blow out past the edge and fade, and only then does the figure inside
- * and the struck-through old price fade up. Nothing of that shot's colour,
- * copy or layout is here — the geometry is `starburst.js`, the palette is the
- * tier's, and the block sits in the paywall's own rhythm.
+ * The motion is the StressWatch pricing shot's anatomy, rebuilt rather than
+ * copied: a seed dot sits alone, springs open into a faceted rosette that
+ * lands with one overshoot, a second rosette behind it counter-rotates in,
+ * topographic rings blow out past the edge and fade, and only then does the
+ * figure inside and the struck-through old price fade up. Nothing of that
+ * shot's colour, copy or layout is here — the geometry is `starburst.js`, the
+ * palette is the tier's, and the block sits in the paywall's own rhythm.
  *
  * ── the two decisions worth defending ─────────────────────────────
  *
@@ -22,24 +22,30 @@ import { OFFER } from '../copy.js'
  * grows is already on screen. That is what makes the entry read as one object
  * arriving rather than two objects swapping.
  *
- * **The figure lands late, and after the overshoot.** `50%` fades at 640ms,
+ * **The figure lands late, and after the overshoot.** `50%` fades at 520ms,
  * which is past the badge's own settle. Overlapping them puts two things
  * overshooting in the same 200ms and the result reads as bounce; separated,
  * the badge is weight and the figure is arrival.
+ *
+ * ── on the label that used to sit above it ────────────────────────
+ *
+ * There was a `✦ WELCOME OFFER ✦` line and a `For limited time only` subtitle
+ * here. Both are gone. The badge says `50% OFF` and the heading two intervals
+ * down says `Limited Time 50% Offer Today` — the label was a third statement
+ * of the same fact, and it was the one with nothing to add. The height it
+ * freed went into the badge rather than into whitespace, which is why the
+ * figure now has margin inside the rosette instead of touching its waist.
  */
 
 /* Timing, in ms from the block being told to play. Kept as one object so the
-   dev scrubber and the animation cannot disagree. */
+   numbers quoted in the README and the numbers that run cannot drift. */
 const T = {
   seed: 0,
-  pop: 380,
-  rings: 430,
-  eyebrow: 520,
-  sub: 600,
-  figure: 640,
-  off: 720,
-  was: 880,
-  idle: 1700,
+  pop: 300,
+  rings: 350,
+  figure: 520,
+  off: 600,
+  idle: 1500,
 }
 const ms = (n) => n / 1000
 
@@ -47,8 +53,9 @@ const N = 9          // points
 const R = 78         // outer radius
 const RI = 57.5      // waist
 const RINGS = 5
+const VB = 220       // the viewBox the two radii are quoted in
 
-export default function StarburstOffer({ t, run = 0, size = 200 }) {
+export default function StarburstOffer({ t, run = 0, size = 244 }) {
   const uid = useId().replace(/:/g, '')
   const g = useMemo(() => {
     const pts = ring(N, R, RI)
@@ -60,42 +67,15 @@ export default function StarburstOffer({ t, run = 0, size = 200 }) {
   }, [])
 
   const [c0, c1, c2] = t.starA
-  const vb = 220
+  /* the figure is a fraction of the badge, not a fixed size — the waist is
+     26% of `size`, so a fixed 46px would touch it the moment the badge grew */
+  const pct = size * 0.195
+  const off = size * 0.063
 
   return (
     <div className="relative flex flex-col items-center" style={{ width: '100%' }}>
-      {/* ── eyebrow ─────────────────────────────────────────────── */}
-      <motion.div
-        key={`eb-${run}`}
-        className="flex items-center gap-[7px]"
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.42, delay: ms(T.eyebrow), ease: [0.2, 0.7, 0.2, 1] }}
-      >
-        <Sparkle size={11} color={t.gold} />
-        <span
-          className="font-id"
-          style={{ fontSize: 13.5, fontWeight: 600, letterSpacing: '.06em', color: '#fff' }}
-        >
-          {OFFER.eyebrow}
-        </span>
-        <Sparkle size={11} color={t.gold} />
-      </motion.div>
-
-      <motion.p
-        key={`sb-${run}`}
-        className="font-id"
-        style={{ fontSize: 12.5, fontWeight: 400, color: 'rgba(255,255,255,.5)', marginTop: 5 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: ms(T.sub) }}
-      >
-        {OFFER.sub}
-      </motion.p>
-
-      {/* ── the badge ───────────────────────────────────────────── */}
-      <div className="relative" style={{ width: size, height: size, marginTop: 10 }}>
-        <svg viewBox={`${-vb / 2} ${-vb / 2} ${vb} ${vb}`} width={size} height={size}
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg viewBox={`${-VB / 2} ${-VB / 2} ${VB} ${VB}`} width={size} height={size}
              style={{ overflow: 'visible', display: 'block' }}>
           <defs>
             <linearGradient id={`${uid}f`} x1="18%" y1="4%" x2="82%" y2="96%">
@@ -189,7 +169,7 @@ export default function StarburstOffer({ t, run = 0, size = 200 }) {
           </motion.g>
         </svg>
 
-        {/* the seed. Sits alone for 380ms, then hands over to the spring. */}
+        {/* the seed. Sits alone, then hands over to the spring. */}
         <motion.span
           key={`${run}-seed`}
           className="absolute rounded-full"
@@ -204,7 +184,7 @@ export default function StarburstOffer({ t, run = 0, size = 200 }) {
           <motion.span
             key={`${run}-pct`}
             className="font-id"
-            style={{ fontSize: 46, fontWeight: 700, letterSpacing: '-.03em', color: '#fff', lineHeight: 1 }}
+            style={{ fontSize: pct, fontWeight: 700, letterSpacing: '-.03em', color: '#fff', lineHeight: 1 }}
             initial={{ opacity: 0, scale: 0.82, y: 6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.46, delay: ms(T.figure), ease: [0.2, 0.72, 0.24, 1] }}
@@ -214,7 +194,7 @@ export default function StarburstOffer({ t, run = 0, size = 200 }) {
           <motion.span
             key={`${run}-off`}
             className="font-id"
-            style={{ fontSize: 15, fontWeight: 600, letterSpacing: '.16em', color: 'rgba(255,255,255,.92)', marginTop: 2 }}
+            style={{ fontSize: off, fontWeight: 600, letterSpacing: '.16em', color: 'rgba(255,255,255,.92)', marginTop: size * 0.012 }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, delay: ms(T.off), ease: [0.2, 0.72, 0.24, 1] }}
@@ -242,7 +222,7 @@ export default function StarburstOffer({ t, run = 0, size = 200 }) {
               ease: 'easeInOut',
             }}
           >
-            <Sparkle size={s} color={t.spark} />
+            <Sparkle size={s * (size / 196)} color={t.spark} />
           </motion.span>
         ))}
       </div>

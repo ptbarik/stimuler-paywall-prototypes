@@ -41,7 +41,7 @@ export default function Paywall({ variant, tier, onTier, run, onReplay, scale = 
   return (
     <div className="relative overflow-hidden shrink-0"
          style={{ width: 412, height: 892, borderRadius: 44, background: t.page,
-                  transform: `scale(${scale})`, transformOrigin: 'top center',
+                  transform: `scale(${scale})`, transformOrigin: 'top left',
                   boxShadow: '0 40px 90px rgba(0,0,0,.55), 0 0 0 8px #0b0b0f, 0 0 0 9px rgba(255,255,255,.10)' }}>
 
       {/* the three blurred plates from the export's `Gradients` group */}
@@ -60,14 +60,36 @@ export default function Paywall({ variant, tier, onTier, run, onReplay, scale = 
       <StatusBar />
       <CloseButton t={t} />
 
-      {/* the toggle is pinned — it is the first decision on the page and has to
-          stay reachable while the comparison table is being read */}
+      {/*
+        ── the pinned header ──────────────────────────────────────
+
+        The toggle is the first decision on the page and has to stay reachable
+        while the comparison table is being read, so it does not scroll.
+
+        What sits behind it is a *masked* backdrop blur rather than an opaque
+        bar. A solid band would cut the page in two at a fixed line and make
+        the frame read as two panes; the mask lets the blur fall off to nothing
+        over its last 45%, so content going under it dissolves instead of
+        meeting an edge. The tinted wash on top is the page's own top stop, so
+        the band is the background densified rather than a new colour laid over
+        it — which is why it survives the tier switch without a second value.
+      */}
+      <motion.div
+        className="absolute inset-x-0 z-20 pointer-events-none"
+        style={{
+          top: 45, height: 118,
+          backdropFilter: 'blur(14px)', WebkitBackdropFilter: 'blur(14px)',
+          background: `linear-gradient(180deg,${t.scrim} 0%,${t.scrim} 42%,transparent 100%)`,
+          maskImage: 'linear-gradient(180deg,#000 0%,#000 55%,transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(180deg,#000 0%,#000 55%,transparent 100%)',
+        }}
+        animate={{ opacity: scrolled ? 1 : 0.55 }}
+        transition={{ duration: 0.28 }}
+      />
+
       <div className="absolute inset-x-0 z-30" style={{ top: 91.8 }}>
         <TierToggle tier={tier} onChange={onTier} t={t} />
       </div>
-      <motion.div className="absolute inset-x-0 z-20 pointer-events-none"
-                  style={{ top: 45, height: 105, background: `linear-gradient(180deg,${tier === 'pro' ? '#16122A' : '#241503'} 30%,transparent)` }}
-                  animate={{ opacity: scrolled ? 1 : 0 }} transition={{ duration: 0.25 }} />
 
       <div ref={scroller} className="absolute inset-0 overflow-y-auto no-bar"
            style={{ paddingTop: 158, paddingBottom: 262 }}>

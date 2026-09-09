@@ -21,6 +21,8 @@ export const PRO = {
 
   /* the frame's own fill, and the three blurred plates over it */
   page: 'linear-gradient(180deg,#16122A 0%,#120F22 60.1%,#0D0B16 100%)',
+  /* the page's own top stop, for the pinned header's wash */
+  scrim: 'rgba(22,18,42,.92)',
   glow: [
     { w: 517, h: 231, x: -19, y: 28, fill: 'rgba(59,54,140,.35)', blur: 145 },
     { w: 336, h: 231, x: 263, y: 145, fill: 'rgba(59,54,140,.12)', blur: 48, blend: 'plus-lighter' },
@@ -53,6 +55,8 @@ export const PRO = {
   sheetHalo: 'rgba(111,145,255,.5)',
   buy: 'linear-gradient(90.01deg,#4236C6 0.05%,#6F64FF 50.02%,#4236C6 100%)',
   buyInk: '#FFFFFF',
+  shine: 'rgba(255,255,255,.42)',
+  shineCore: 'rgba(255,255,255,.92)',
   planLine: '#4B4789',
   planPickLine: '#6F64FF',
   planPickFill: 'rgba(111,145,255,.12)',
@@ -83,6 +87,7 @@ export const PLUS = {
   wordmark: 'PRO+',
 
   page: 'linear-gradient(180deg,#241503 0%,#180C01 55%,#130800 100%)',
+  scrim: 'rgba(36,21,3,.92)',
   glow: [
     { w: 517, h: 231, x: -19, y: 28, fill: 'rgba(140,102,42,.38)', blur: 145 },
     { w: 336, h: 231, x: 263, y: 145, fill: 'rgba(231,202,121,.10)', blur: 48, blend: 'plus-lighter' },
@@ -111,6 +116,8 @@ export const PLUS = {
   sheetHalo: 'rgba(231,202,121,.5)',
   buy: 'linear-gradient(90.01deg,#DB992F 0.05%,#FFE090 50.02%,#DB992F 100%)',
   buyInk: '#130800',
+  shine: 'rgba(255,251,235,.42)',
+  shineCore: 'rgba(255,253,244,.9)',
   planLine: '#5B4726',
   planPickLine: '#E7CA79',
   planPickFill: 'rgba(231,202,121,.10)',

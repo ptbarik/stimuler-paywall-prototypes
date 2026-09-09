@@ -35,3 +35,25 @@ button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; colo
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.01ms !important; transition-duration:.01ms !important }
 }
+
+/* ── the CTA's shine ──────────────────────────────────────────────
+   A 30%-wide highlight crossing the button at 20°, resting off the
+   right-hand edge for most of the cycle. Written as a keyframe rather
+   than a spring because it is ambient — it is not reacting to anything,
+   and driving it from React would re-render the sheet 60 times a second
+   for a decoration. */
+.cta-shine{
+  position:absolute; top:-80%; left:0; width:24%; height:260%;
+  background:linear-gradient(90deg,
+    transparent 0%, var(--shine) 38%, var(--shine-core) 50%, var(--shine) 62%, transparent 100%);
+  transform:translateX(-200%) rotate(20deg);
+  animation:cta-shine 4.2s cubic-bezier(.42,0,.32,1) infinite;
+  pointer-events:none;
+  filter:blur(1px);
+}
+@keyframes cta-shine{
+  0%   { transform:translateX(-200%) rotate(20deg) }
+  34%  { transform:translateX(560%)  rotate(20deg) }
+  100% { transform:translateX(560%)  rotate(20deg) }
+}
+@media (prefers-reduced-motion: reduce){ .cta-shine{ display:none } }
