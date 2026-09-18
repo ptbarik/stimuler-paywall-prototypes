@@ -12,9 +12,14 @@ two can be put side by side and compared.
 | [`roadmap/`](roadmap) | the roadmap paywall — one animation, one toggle | https://stimuler-roadmap-paywall.vercel.app |
 | [`premium/`](premium) | **the Premium tab flow** — nav → crown interstitial → paywall | https://stimuler-premium-tab.vercel.app |
 | [`fab/`](fab) | **the offer block, two ways** — coupon ticket vs starburst badge | https://stimuler-paywall-offer.vercel.app |
+| [`coupon-v3/`](coupon-v3) | **Stimuler V3 — the coupon paywall** — bold switch, glare CTA, running rim | https://stimuler-coupon-v3.vercel.app |
+| [`learn-fab/`](learn-fab) | **the Learn screen's floating action, eleven ways** | https://stimuler-learn-fab.vercel.app |
+| [`gift-fab/`](gift-fab) | **the gift, animated** — eight revised FABs with their motion built | https://stimuler-gift-fab.vercel.app |
+| [`gift-open/`](gift-open) | **tap the gift → the coupon paywall** — four screens, opening | https://stimuler-gift-open.vercel.app |
+| [`fab-shine/`](fab-shine) | **seven FAB tabs, shining** — one light, stars twinkling | https://stimuler-fab-shine.vercel.app |
 
 ```bash
-cd fab                # or premium, iteration-a, iteration-b, roadmap
+cd fab-shine          # or gift-open, gift-fab, learn-fab, fab, premium, iteration-a, iteration-b, roadmap
 npm install
 npm run dev           # http://localhost:5173
 ```
@@ -98,6 +103,59 @@ rather than in the motion.
 
 Its README has the full notes, including the four places where the brief and
 the design disagreed and why the design won each one.
+
+## The Learn screen's floating action
+
+[`learn-fab/`](learn-fab) is the other end of the same question. Where `fab/`
+asks how the discount should read *inside* the paywall, this one asks what the
+permanent upsell should look like on the screen you spend your time on — the
+Learn roadmap, with the button in the 390 × 96 slot the frame marks, 14 above
+the nav.
+
+Eleven of them, from two Paper sheets: three surviving pill directions, the
+two-tier band, four that are new since (collapse on scroll, last hour, earned
+entrance, shine sweep), and three answers to whether gold on glass should be an
+accent, a tint, or a light source. Same slot, same clock, same arrival — so the
+only thing that differs between any two of them is the thing being asked about.
+
+The rail on the right switches them, and only ever shows the control the
+selected one reacts to: the clock for two of them, a landed lesson for one, and
+the phone's own scroller for another.
+
+## The gift, animated
+
+[`gift-fab/`](gift-fab) is the motion pass on the eight revised floating
+actions. One 4.2s loop for all of them, in three beats that never overlap: the
+box rattles for 1.2s, the pane's own highlight runs for the next 1.9s — a
+border chase on seven of them, a glare across the paper on the gold ticket —
+and then a second of nothing. The pause is what separates an invitation from a
+spinner.
+
+On the five where the box breaks the top edge of the pill, the ribbon loops
+swing 70ms behind it like ears. On the three where the gift sits inside, they
+stay rigid — ears flapping against a hard edge read as a glitch.
+
+## Tap the gift
+
+[`gift-open/`](gift-open) closes the loop: the four revised floating actions on
+the Learn screen, each idling on one 6s cycle — the box works for the first
+1.2s, the light works in the middle, and the last second is still — and a tap
+that takes the gift to the centre of the screen, throws its ribbons off, opens
+the lid, and turns the light out of the box into the V1 coupon paywall.
+
+The paywall is [`fab/`](fab)'s V1 page vendored whole, minus its own device
+shell, so what you land on is the page as it ships.
+
+## Seven tabs, shining
+
+[`fab-shine/`](fab-shine) is the motion pass on the seven revised tabs. One 6s
+light: a soft diagonal band crossing the tab from 1.2s to 3s, and the glint on
+the border is *the same band* used as a mask on the outline stroke, so the lit
+stretch of edge is always the stretch the wash is crossing. Wherever the sheet
+puts a star, it twinkles — four stops rather than two, each on its own offset
+clock so no two blink together.
+
+Animation only. No flow, no tap, no paywall.
 
 ## Notes
 

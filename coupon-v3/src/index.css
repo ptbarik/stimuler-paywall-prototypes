@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* The Figma file is set in Google Sans, which is not self-hostable. Inter
+   Display is the match the earlier Stimuler paywall prototypes carry, so this
+   page sits with them rather than beside them; Poppins is the proof block's
+   own family and Urbanist signs the testimonials, both as the export has it. */
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:300;font-display:swap;src:url('/fonts/interdisplay-300.woff2') format('woff2')}
+@font-face{font-family:'Geist';font-weight:100 900;font-display:swap;src:url('/fonts/geist.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url('/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url('/fonts/poppins-700.woff2') format('woff2')}
+
+:root{
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --pop:'Poppins',system-ui,-apple-system,sans-serif;
+  --geist:'Geist',system-ui,-apple-system,sans-serif;
+}
+
+*{ -webkit-tap-highlight-color:transparent }
+html,body{ margin:0; background:#060509; }
+body{ font-family:var(--id); -webkit-font-smoothing:antialiased; }
+button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; color:inherit }
+
+.font-id{ font-family:var(--id) }
+.font-poppins{ font-family:var(--pop) }
+.font-geist{ font-family:var(--geist) }
+/* the testimonial signature is italic Poppins here — Urbanist is not carried
+   into this prototype, and the export's italic is the only thing it was doing */
+.font-urbanist{ font-family:var(--pop); font-style:italic }
+
+/* the phone scrolls; it does not advertise that it scrolls */
+.no-bar{ scrollbar-width:none; -ms-overflow-style:none }
+.no-bar::-webkit-scrollbar{ display:none; width:0; height:0 }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important }
+}
+
+/* ── the CTA's glare ──────────────────────────────────────────────
+   The design's own `Rectangle 100868`: 20.37 wide, 45°, in the tier's
+   `--glare`. Two departures from the flat export, both deliberate.
+
+   **The edges are feathered over the whole bar.** A hard-edged rectangle
+   banding across a smooth gradient reads as a rectangle, not as light. The
+   stops ramp symmetrically so the brightest point is a line with no width.
+
+   **It travels linearly.** No easing at either end: light crossing a surface
+   moves at one speed, and any acceleration makes it read as an object being
+   dragged instead. The rest between passes is at the far edge, off-screen, so
+   the eye never catches it waiting.
+
+   Height 220% because the bar is rotated 45° inside a 54px pill — at that
+   angle it needs to be longer than the button is tall to cross the corners
+   rather than clipping short of them. */
+.cta-glare{
+  position:absolute; top:-60%; left:0; width:22px; height:220%;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--glare) 22%, transparent) 28%,
+    color-mix(in srgb, var(--glare) 42%, transparent) 50%,
+    color-mix(in srgb, var(--glare) 22%, transparent) 72%,
+    transparent 100%);
+  /* additive, not opaque. The export paints `Rectangle 100868` as a flat
+     `#5E52FF`, which is lighter than the button at its ends and *darker*
+     than it at the middle stop (`#6F64FF`) — so a literal read of the file
+     gives a bar that brightens the edges and dims the centre, which is the
+     opposite of a glare. Compositing it with `plus-lighter` keeps the
+     design's hue and makes it lighten everywhere it crosses. */
+  mix-blend-mode:plus-lighter;
+  transform:translateX(-200%) rotate(45deg);
+  animation:cta-glare 3.6s linear infinite;
+  pointer-events:none;
+  will-change:transform;
+}
+@keyframes cta-glare{
+  0%   { transform:translateX(-200%) rotate(45deg) }
+  62%  { transform:translateX(1980%) rotate(45deg) }
+  100% { transform:translateX(1980%) rotate(45deg) }
+}
+
+/* ── the selected price card's running rim ────────────────────────
+   One conic gradient turning behind the card, masked down to the 1px
+   ring: the card's own box punched out of a full-bleed plate with
+   `mask-composite: exclude`, so what survives is exactly the border and
+   it follows the 11.5px radii for free.
+
+   `@property` is what makes it turn at all — a bare custom property is a
+   string to the animation engine and would step between keyframes rather
+   than interpolate. Declaring it an `<angle>` is the whole trick.
+
+   The lit arc is ~50° of the 360 and falls off at both ends, so it reads
+   as a highlight travelling the outline rather than a segment chasing it.
+   6s, linear, because this one is ambient and must never compete with the
+   CTA's glare for attention. */
+@property --rim-a{ syntax:'<angle>'; inherits:false; initial-value:0deg }
+
+.rim{
+  position:absolute; inset:-1px; border-radius:inherit; padding:1.5px;
+  background:conic-gradient(from var(--rim-a),
+    transparent 0deg,
+    transparent 286deg,
+    color-mix(in srgb, var(--rim) 30%, transparent) 318deg,
+    var(--rim) 344deg,
+    #ffffff 352deg,
+    var(--rim) 356deg,
+    transparent 360deg);
+  /* additive over the static border, not instead of it — the outline stays a
+     full outline at every point in the cycle and simply brightens in one
+     place. Painted opaquely it would read as a segment chasing a gap. */
+  mix-blend-mode:plus-lighter;
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite:exclude;
+  animation:rim-turn 6s linear infinite;
+  pointer-events:none;
+}
+@keyframes rim-turn{ to{ --rim-a:360deg } }
+
+@media (prefers-reduced-motion: reduce){
+  .cta-glare, .rim{ display:none }
+}
