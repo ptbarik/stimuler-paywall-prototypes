@@ -77,7 +77,12 @@ export const PRO = {
   shine: 'rgba(255,255,255,.42)',
   shineCore: 'rgba(255,255,255,.92)',
   planLine: '#4B4789',
-  planPickLine: '#6F64FF',
+  /* the picked card's stroke is a gradient, which the CSS export drops —
+     sampled off the 18 Sep frame: 2px, `#8A82F7` at the left and right edges
+     ramping to `#F6F6FE` across the middle of the top and bottom runs. The
+     60° tilt is measured, not guessed: the bright band crosses the top edge
+     at 46% and the bottom at 70%, which over a 183 × 77 card is 60°. */
+  planPickLine: 'linear-gradient(60deg,#8A82F7 0%,#F6F6FE 50%,#8A82F7 100%)',
   planPickFill: '#201C47',
   save: 'linear-gradient(85.88deg,#5348CA -2.69%,#7E74FB 49.16%,#5348CA 101.01%)',
   saveInk: '#FFFFFF',
@@ -138,8 +143,13 @@ export const PLUS = {
   shine: 'rgba(255,251,235,.42)',
   shineCore: 'rgba(255,253,244,.9)',
   planLine: '#5B4726',
-  planPickLine: '#E7CA79',
-  planPickFill: 'rgba(231,202,121,.10)',
+  planPickLine: 'linear-gradient(60deg,#D6AF5E 0%,#FFF6DF 50%,#D6AF5E 100%)',
+  /* opaque, not the `rgba(231,202,121,.10)` tint it used to be. The gradient
+     stroke is painted by stacking the fill on `padding-box` over the gradient
+     on `border-box`, and a translucent fill lets the gradient through the
+     middle of the card — the stroke stops being a stroke. This is that same
+     10% tint resolved against the sheet at the plan row's own height. */
+  planPickFill: '#3B301E',
   save: 'linear-gradient(96.52deg,#E8C15F 5.76%,#C48722 96.63%)',
   saveInk: '#FFFFFF',
 

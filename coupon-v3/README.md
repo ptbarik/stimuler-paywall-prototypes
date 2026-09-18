@@ -25,7 +25,7 @@ feature card is untouched, and so is the comparison table's 84.8px column pitch.
 | Feature card | `rgba(50,44,109,.3)` on PRO | `rgba(255,255,255,.06)`, both tiers |
 | Section chips | hairline outline, Inter Display | solid plate, **Geist** 500 / 13.73, 38 tall |
 | Chip fill | — | `#191935` (PRO) · `#140901` (PRO+) |
-| PRO yearly card | translucent tint | solid `#201C47` |
+| PRO yearly card | translucent tint, flat 1px stroke | solid `#201C47`, **2px gradient stroke** |
 | PRO+ chrome black | `#000000` | `#140901` |
 | PRO+ CTA ink | `#130800` | `#402305` |
 | PRO+ `50% OFF` chip ink | dark | `#FFFFFF` |
@@ -81,9 +81,37 @@ its ends but *darker* than it at the middle stop (`#6F64FF`), so the bar
 brightened the edges and dimmed the centre. The sweep above is the one that
 reads as light.
 
-**The selected price card has no running rim.** An earlier build put a conic
-gradient round its border. Removed — two highlights inside the same 100px of
-sheet compete, and the CTA is the one that should win.
+## The selected price card
+
+**Its 2px stroke is a gradient**, and the CSS export drops it — Figma flattens
+gradient strokes out of the dump, so the card arrives with a fill and no border
+at all. The values are sampled off the 18 Sep frame: `#8A82F7` at the left and
+right edges, ramping to `#F6F6FE` across the middle of the top and bottom runs.
+
+The 60° tilt is measured rather than guessed. The bright band crosses the top
+edge at 46% of the width and the bottom edge at 70%; over a 183 × 77 card that
+is a 60° axis, which is why the highlight sits left of centre up top and right
+of centre underneath.
+
+It is painted by stacking two backgrounds — the fill clipped to `padding-box`,
+the gradient clipped to `border-box`, with the border itself transparent. That
+is the only technique that gives a gradient stroke which still follows the
+11.5px radii; `border-image` does not round.
+
+**The fill under it has to be opaque**, which is why PRO+'s is now `#3B301E`
+rather than the `rgba(231,202,121,.10)` tint it was. A translucent
+`padding-box` layer lets the `border-box` gradient through the middle of the
+card and the stroke stops being a stroke. `#3B301E` is that same 10% tint
+resolved against the sheet at the plan row's own height, so nothing changes
+visually except that it now covers.
+
+The unpicked card keeps its flat 1px `#4B4789`, so the two are deliberately
+different constructions: only the selected one carries a gradient, and only it
+needs the extra paint.
+
+**There is no running rim.** An earlier build animated a conic gradient round
+this border. Removed — two highlights inside the same 100px of sheet compete,
+and the CTA is the one that should win.
 
 ## Layout
 

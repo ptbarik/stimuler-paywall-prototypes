@@ -239,13 +239,33 @@ export function PriceSheet({ t, tier, run }) {
           ].map(([id, label, price]) => {
             const on = plan === id
             return (
+              /*
+                The picked card's 2px stroke is a gradient, so it cannot be a
+                `border-color`. It is painted as two stacked backgrounds — the
+                fill clipped to `padding-box`, the gradient to `border-box` —
+                with the border itself transparent. That is the one technique
+                that gives a gradient stroke which still follows the 11.5px
+                radii; `border-image` does not round.
+
+                The unpicked card keeps a flat 1px `#4B4789`, so the two are
+                deliberately not the same construction: only the selected one
+                is carrying a gradient, and only it needs the extra paint.
+              */
               <button key={id} onClick={() => setPlan(id)}
                       className="flex-1 rounded-[11.5px] text-left transition-colors"
-                      style={{
-                        padding: 13.4, minHeight: 77,
-                        border: `1px solid ${on ? t.planPickLine : t.planLine}`,
-                        background: on ? t.planPickFill : 'transparent',
-                      }}>
+                      style={
+                        on
+                          ? {
+                              padding: 12.4, minHeight: 77,
+                              border: '2px solid transparent',
+                              background: `linear-gradient(${t.planPickFill},${t.planPickFill}) padding-box, ${t.planPickLine} border-box`,
+                            }
+                          : {
+                              padding: 13.4, minHeight: 77,
+                              border: `1px solid ${t.planLine}`,
+                              background: 'transparent',
+                            }
+                      }>
                 <div className="flex items-center gap-[6px]">
                   <span className="font-id" style={{ fontSize: 9.6, fontWeight: 500, color: '#fff', letterSpacing: '-.01em' }}>{label}</span>
                   {id === 'yearly' && (
