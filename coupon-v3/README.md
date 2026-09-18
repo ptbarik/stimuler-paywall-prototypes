@@ -30,7 +30,8 @@ feature card is untouched, and so is the comparison table's 84.8px column pitch.
 | PRO+ CTA ink | `#130800` | `#402305` |
 | PRO+ `50% OFF` chip ink | dark | `#FFFFFF` |
 | Table pills | PRO+ carried a translucent PRO pill | identical across tiers |
-| Active toggle label | 600 | **700** |
+| Active toggle label | 600, dark ink | **700**, white ink on PRO |
+| Toggle track | no stroke | 1px `#8A8991` hairline |
 | Roadmap Days | `50+` vs `100+` | `100+` in **both** columns |
 
 Two of those are worth a second look before this ships.
@@ -46,59 +47,43 @@ PRO+ was updated to 700; PRO still reads 600. The switch has to be symmetrical
 — the same control cannot change weight depending on which half is live — so
 both are bold.
 
-## The two animations
+**The switch's white ink is PRO only.** The 18 Sep screenshot post-dates the CSS
+export and moves PRO's live label from `#171436` to white, and gives the track a
+`#8A8991` hairline. The hairline is structural and applies to both tiers (warmed
+to `#8F8577` on gold). The white ink does not: white on PRO+'s `#FFE292` is
+about 1.3:1 and unreadable, so PRO+ keeps `#130800`. If the gold pill was
+darkened in the same pass, send that frame and both go white.
 
-### The CTA's glare
+## The CTA's shine
 
-The bar being swept is the design's own. V3 added `Rectangle 100868` inside the
-CTA: 20.37 × 123.28 at 45°, `#5E52FF` on PRO and `#F2BE61` on PRO+, with
-`isolation: isolate` on the button around it. So this is not a highlight
-invented for the prototype — it is the file's geometry given somewhere to go.
+A 24%-wide highlight crossing the button at 20°, resting off the right-hand
+edge for two thirds of its 4.2s cycle. Three things about it.
 
-Three things separate it from a literal read of the export.
+**It is at 20°, not vertical.** A vertical bar reads as a wipe across the
+button; angled, it reads as light moving over a surface.
 
-**It composites additively.** The export paints the bar as a flat fill, and
-`#5E52FF` is lighter than the button at its ends but *darker* than it at the
-middle stop (`#6F64FF`). Painted opaquely the bar therefore brightens the edges
-and dims the centre — the exact opposite of a glare. `plus-lighter` keeps the
-design's hue and makes it lighten everywhere it crosses.
+**It rests.** A highlight that is always mid-crossing stops being an accent and
+becomes a spinner, which on a purchase button reads as *pending*.
 
-**Its edges are feathered across the whole 22px.** A hard-edged rectangle
-crossing a gradient this smooth reads as a rectangle. The stops ramp
-symmetrically, so the brightest point is a line with no width.
+**`--shine` is the tier's own.** White on PRO's indigo; a warm white on PRO+,
+because pure white over that gold blows out rather than glints.
 
-**It travels linearly.** No easing at either end. Light crossing a surface moves
-at one speed; any acceleration makes it read as an object being dragged instead.
-The rest between passes happens off the right-hand edge, so the eye never
-catches it waiting — 62% of the 3.6s cycle is travel.
+It is a CSS keyframe rather than a spring because it is ambient — it reacts to
+nothing, and driving it from React would re-render the price sheet sixty times a
+second for a decoration. `isolation: isolate` on the button is the V3 export's
+own and is load-bearing: it gives the button its own stacking context so the
+sweep is clipped by the pill instead of escaping over the sheet.
 
-`isolation: isolate` is load-bearing and is the export's own: it gives the
-button its own stacking context, so the bar composites against the gradient and
-is clipped by the pill instead of escaping over the price sheet.
+The V3 file draws a glare bar inside the CTA as geometry — `Rectangle 100868`,
+20.37 × 123.28 at 45°, `#5E52FF` / `#F2BE61`. An earlier build animated that
+literally. It is not used: painted flat, `#5E52FF` is lighter than the button at
+its ends but *darker* than it at the middle stop (`#6F64FF`), so the bar
+brightened the edges and dimmed the centre. The sweep above is the one that
+reads as light.
 
-### The selected price card's rim
-
-One conic gradient turning behind the card, masked down to the 1.5px ring: the
-card's own box punched out of a full-bleed plate with `mask-composite: exclude`,
-so what survives is exactly the border — and it follows the 11.5px radii for
-free.
-
-**`@property` is what makes it turn at all.** A bare custom property is a string
-to the animation engine and would step between keyframes rather than
-interpolate. Declaring `--rim-a` an `<angle>` is the whole trick.
-
-**It is additive over the static border, not instead of it.** The outline stays
-a full outline at every point in the cycle and simply brightens in one place.
-Painted opaquely it would read as a segment chasing a gap.
-
-The lit arc is ~70° of the 360 with a white core and falloff at both ends, on a
-6s linear turn — slower than the CTA's glare on purpose. Two highlights on the
-same 100px of screen competing at the same tempo read as a loading state.
-
-One honest limitation: a conic gradient's angular speed is not the same as
-perimeter speed on a rectangle, so the shine moves faster across the short
-edges than the long ones. On a 183 × 77 card the difference is small enough to
-read as natural. It would not be on something much wider.
+**The selected price card has no running rim.** An earlier build put a conic
+gradient round its border. Removed — two highlights inside the same 100px of
+sheet compete, and the CTA is the one that should win.
 
 ## Layout
 

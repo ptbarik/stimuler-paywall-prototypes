@@ -18,10 +18,9 @@
  * across tiers (PRO+ was carrying a translucent variant), the active toggle
  * label goes bold, and Roadmap Days reads `100+ Days` in both columns.
  *
- * `glare` is the one token with no V2 ancestor. It is `Rectangle 100868`, a
- * 20.37 × 123.28 bar at 45° that the V3 file draws *inside* the CTA — the
- * design ships the highlight as geometry, so the animation here is moving a
- * thing the design already has rather than adding one.
+ * Two values post-date the CSS export and were sampled off the 18 Sep switch
+ * instead: `knobInk` on PRO, now white, and `trackLine`, the hairline the
+ * track has gained.
  */
 
 /* ── Stimuler PRO — indigo ──────────────────────────────────────── */
@@ -44,7 +43,10 @@ export const PRO = {
   /* the tier switch: #0E0B2D at .77, with the live half on a 3-stop sweep */
   track: '#0E0B2D',
   knob: 'linear-gradient(87.44deg,#382EA5 -13.09%,#9991FF 53.31%,#382EA5 119.7%)',
-  knobInk: '#171436',
+  /* the live half's label is white now, and the track carries a hairline —
+     both sampled off the 18 Sep switch, which post-dates the CSS export */
+  knobInk: '#FFFFFF',
+  trackLine: '#8A8991',
 
   /* surfaces */
   card: 'rgba(255,255,255,.06)',
@@ -71,13 +73,12 @@ export const PRO = {
   sheetHalo: 'rgba(111,145,255,.5)',
   buy: 'linear-gradient(90.01deg,#4236C6 0.05%,#6F64FF 50.02%,#4236C6 100%)',
   buyInk: '#FFFFFF',
-  /* `Rectangle 100868` — the CTA's own glare bar */
-  glare: '#5E52FF',
+  /* the CTA's sweep */
+  shine: 'rgba(255,255,255,.42)',
+  shineCore: 'rgba(255,255,255,.92)',
   planLine: '#4B4789',
   planPickLine: '#6F64FF',
   planPickFill: '#201C47',
-  /* the rim that runs the selected card's outline */
-  rim: '#9B92FF',
   save: 'linear-gradient(85.88deg,#5348CA -2.69%,#7E74FB 49.16%,#5348CA 101.01%)',
   saveInk: '#FFFFFF',
 
@@ -108,7 +109,10 @@ export const PLUS = {
 
   track: '#1F1406',
   knob: 'linear-gradient(85.77deg,#EAB259 1.85%,#FFE292 49.31%,#EAB259 96.78%)',
+  /* PRO+ keeps dark ink: white on `#FFE292` is about 1.3:1 and unreadable.
+     The screenshot that moved PRO to white was the indigo tier only. */
   knobInk: '#130800',
+  trackLine: '#8F8577',
 
   card: 'rgba(255,255,255,.06)',
   cardLine: 'rgba(231,202,121,.13)',
@@ -131,11 +135,11 @@ export const PLUS = {
   sheetHalo: 'rgba(231,202,121,.5)',
   buy: 'linear-gradient(90.01deg,#DB992F 0.05%,#FFE090 50.02%,#DB992F 100%)',
   buyInk: '#402305',
-  glare: '#F2BE61',
+  shine: 'rgba(255,251,235,.42)',
+  shineCore: 'rgba(255,253,244,.9)',
   planLine: '#5B4726',
   planPickLine: '#E7CA79',
   planPickFill: 'rgba(231,202,121,.10)',
-  rim: '#FFE8AE',
   save: 'linear-gradient(96.52deg,#E8C15F 5.76%,#C48722 96.63%)',
   saveInk: '#FFFFFF',
 

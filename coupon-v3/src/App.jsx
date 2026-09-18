@@ -13,7 +13,7 @@ import Paywall from './components/Paywall.jsx'
  *
  * The phone is 412 × 892 and must be whole on screen — a paywall you have to
  * scroll the *browser* to see the bottom of cannot be judged, because the
- * pinned CTA is the thing being judged and its glare would be below the fold.
+ * pinned CTA is the thing being judged and its shine would be below the fold.
  *
  * So the frame is scaled to whatever is left after the header, measured rather
  * than assumed: the header's height is read off the DOM on mount and on every
@@ -59,7 +59,7 @@ export default function App() {
           Stimuler V3 · paywall — the coupon, with the CTA moving
         </h1>
         <p className="font-id text-center" style={{ fontSize: 12.5, color: 'rgba(255,255,255,.42)', marginTop: 5 }}>
-          Switch tiers inside the phone. The glare and the price-card rim run on their own.
+          Switch tiers inside the phone. The CTA's shine runs on its own.
         </p>
         <button onClick={() => setRun((r) => r + 1)} className="rounded-full font-id"
                 style={{ marginTop: 10, padding: '7px 15px', fontSize: 12, fontWeight: 500, background: 'rgba(255,255,255,.07)', color: 'rgba(255,255,255,.7)' }}>

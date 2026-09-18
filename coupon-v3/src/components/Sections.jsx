@@ -239,31 +239,13 @@ export function PriceSheet({ t, tier, run }) {
           ].map(([id, label, price]) => {
             const on = plan === id
             return (
-              /*
-                The selected card's outline has a shine running round it.
-
-                It is one conic gradient rotating behind the card, masked to
-                the 1px ring by `mask-composite: exclude` — the card's own fill
-                punched out of a full-bleed plate, so what survives is exactly
-                the border. Drawing it as a rotating gradient rather than as a
-                travelling dot is what keeps it on the corners: a dot animated
-                along the perimeter has to be told where the radii are, and
-                gets it wrong the moment the card's size changes.
-
-                The static border stays underneath at full strength. The shine
-                is additive over it, so at every point in the cycle the outline
-                is still an outline — it brightens in one place rather than
-                being replaced by a moving segment.
-              */
               <button key={id} onClick={() => setPlan(id)}
-                      className={`relative flex-1 rounded-[11.5px] text-left transition-colors${on ? ' rimmed' : ''}`}
+                      className="flex-1 rounded-[11.5px] text-left transition-colors"
                       style={{
                         padding: 13.4, minHeight: 77,
                         border: `1px solid ${on ? t.planPickLine : t.planLine}`,
                         background: on ? t.planPickFill : 'transparent',
-                        '--rim': t.rim,
                       }}>
-                {on && <span className="rim" aria-hidden="true" />}
                 <div className="flex items-center gap-[6px]">
                   <span className="font-id" style={{ fontSize: 9.6, fontWeight: 500, color: '#fff', letterSpacing: '-.01em' }}>{label}</span>
                   {id === 'yearly' && (
@@ -282,34 +264,30 @@ export function PriceSheet({ t, tier, run }) {
         </div>
 
         {/*
-          The CTA, and its glare.
+          The CTA, with a shine crossing it on a slow loop.
 
-          The bar being swept is the design's own: `Rectangle 100868`, 20.37 ×
-          123.28 at 45°, in `glare` — a lighter tint of the button rather than
-          white. So this is not a highlight invented for the prototype, it is
-          the V3 file's geometry given somewhere to go.
+          The sweep is at 20° rather than vertical so it reads as light moving
+          across a surface rather than a bar wiping the button, and it rests
+          for most of its cycle — the highlight is 24% of the button wide and
+          spends two thirds of every 4.2s off the right-hand edge. A shine that
+          is always mid-crossing stops being an accent and becomes a spinner.
 
-          Two things make it read as light rather than as a wipe. It travels
-          **linearly** — no easing at either end, because a glare that
-          accelerates reads as an object being dragged. And its edges are
-          feathered symmetrically over the full 20px, so there is no hard line
-          anywhere in it; the design's flat bar would band visibly against a
-          gradient this smooth.
+          `--shine` is the tier's own: white on PRO's indigo, and a warm white
+          on PRO+, because pure white over gold reads as a blowout.
 
-          `isolation: isolate` is the export's too, and it is load-bearing: it
-          gives the button its own stacking context so the bar composites
-          against the gradient and is clipped by the pill, instead of escaping
-          over the sheet.
+          `isolation: isolate` is the V3 export's own and it is load-bearing —
+          it gives the button its own stacking context, so the sweep is clipped
+          by the pill instead of escaping over the sheet.
         */}
         <button className="cta mx-auto mt-[10px] grid place-items-center rounded-full font-id relative overflow-hidden transition-transform active:scale-[.985]"
                 style={{
                   width: 374, height: 54, background: t.buy, color: t.buyInk,
                   fontSize: 18, fontWeight: 600, letterSpacing: '-.01em',
                   boxShadow: '-8px 11px 12px rgba(15,13,37,.25)',
-                  isolation: 'isolate', '--glare': t.glare,
+                  isolation: 'isolate', '--shine': t.shine, '--shine-core': t.shineCore,
                 }}>
           <span className="relative z-10">{t.cta}</span>
-          <span className="cta-glare" aria-hidden="true" />
+          <span className="cta-shine" aria-hidden="true" />
         </button>
       </div>
 

@@ -48,8 +48,13 @@ export function TierToggle({ tier, onChange, t }) {
   const pad = (H - KH) / 2
   return (
     <div className="relative mx-auto z-30" style={{ width: W, height: H }}>
+      {/* the track and its hairline are separate elements: the fill is at .77
+          opacity per the export, and putting the border on that same node
+          would fade the hairline with it */}
       <div className="absolute inset-0 rounded-[20.7px]"
            style={{ background: t.track, opacity: 0.77, boxShadow: '0 -1.48px 9.37px rgba(0,0,0,.2)' }} />
+      <div className="absolute inset-0 rounded-[20.7px] pointer-events-none"
+           style={{ border: `1px solid ${t.trackLine}` }} />
       <motion.div
         className="absolute rounded-[17px]"
         style={{ width: KW, height: KH, top: pad, background: t.knob }}

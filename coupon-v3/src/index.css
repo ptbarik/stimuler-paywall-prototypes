@@ -40,87 +40,27 @@ button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; colo
   *{ animation-duration:.01ms !important; transition-duration:.01ms !important }
 }
 
-/* ── the CTA's glare ──────────────────────────────────────────────
-   The design's own `Rectangle 100868`: 20.37 wide, 45°, in the tier's
-   `--glare`. Two departures from the flat export, both deliberate.
+/* ── the CTA's shine ──────────────────────────────────────────────
+   A 24%-wide highlight crossing the button at 20°, resting off the
+   right-hand edge for two thirds of its 4.2s cycle. A highlight that is
+   always mid-crossing stops being an accent and becomes a spinner.
 
-   **The edges are feathered over the whole bar.** A hard-edged rectangle
-   banding across a smooth gradient reads as a rectangle, not as light. The
-   stops ramp symmetrically so the brightest point is a line with no width.
-
-   **It travels linearly.** No easing at either end: light crossing a surface
-   moves at one speed, and any acceleration makes it read as an object being
-   dragged instead. The rest between passes is at the far edge, off-screen, so
-   the eye never catches it waiting.
-
-   Height 220% because the bar is rotated 45° inside a 54px pill — at that
-   angle it needs to be longer than the button is tall to cross the corners
-   rather than clipping short of them. */
-.cta-glare{
-  position:absolute; top:-60%; left:0; width:22px; height:220%;
+   Written as a keyframe rather than a spring because it is ambient — it
+   reacts to nothing, and driving it from React would re-render the price
+   sheet sixty times a second for a decoration. */
+.cta-shine{
+  position:absolute; top:-80%; left:0; width:24%; height:260%;
   background:linear-gradient(90deg,
-    transparent 0%,
-    color-mix(in srgb, var(--glare) 22%, transparent) 28%,
-    color-mix(in srgb, var(--glare) 42%, transparent) 50%,
-    color-mix(in srgb, var(--glare) 22%, transparent) 72%,
-    transparent 100%);
-  /* additive, not opaque. The export paints `Rectangle 100868` as a flat
-     `#5E52FF`, which is lighter than the button at its ends and *darker*
-     than it at the middle stop (`#6F64FF`) — so a literal read of the file
-     gives a bar that brightens the edges and dims the centre, which is the
-     opposite of a glare. Compositing it with `plus-lighter` keeps the
-     design's hue and makes it lighten everywhere it crosses. */
-  mix-blend-mode:plus-lighter;
-  transform:translateX(-200%) rotate(45deg);
-  animation:cta-glare 3.6s linear infinite;
+    transparent 0%, var(--shine) 38%, var(--shine-core) 50%, var(--shine) 62%, transparent 100%);
+  transform:translateX(-200%) rotate(20deg);
+  animation:cta-shine 4.2s cubic-bezier(.42,0,.32,1) infinite;
   pointer-events:none;
-  will-change:transform;
+  filter:blur(1px);
 }
-@keyframes cta-glare{
-  0%   { transform:translateX(-200%) rotate(45deg) }
-  62%  { transform:translateX(1980%) rotate(45deg) }
-  100% { transform:translateX(1980%) rotate(45deg) }
+@keyframes cta-shine{
+  0%   { transform:translateX(-200%) rotate(20deg) }
+  34%  { transform:translateX(560%)  rotate(20deg) }
+  100% { transform:translateX(560%)  rotate(20deg) }
 }
 
-/* ── the selected price card's running rim ────────────────────────
-   One conic gradient turning behind the card, masked down to the 1px
-   ring: the card's own box punched out of a full-bleed plate with
-   `mask-composite: exclude`, so what survives is exactly the border and
-   it follows the 11.5px radii for free.
-
-   `@property` is what makes it turn at all — a bare custom property is a
-   string to the animation engine and would step between keyframes rather
-   than interpolate. Declaring it an `<angle>` is the whole trick.
-
-   The lit arc is ~50° of the 360 and falls off at both ends, so it reads
-   as a highlight travelling the outline rather than a segment chasing it.
-   6s, linear, because this one is ambient and must never compete with the
-   CTA's glare for attention. */
-@property --rim-a{ syntax:'<angle>'; inherits:false; initial-value:0deg }
-
-.rim{
-  position:absolute; inset:-1px; border-radius:inherit; padding:1.5px;
-  background:conic-gradient(from var(--rim-a),
-    transparent 0deg,
-    transparent 286deg,
-    color-mix(in srgb, var(--rim) 30%, transparent) 318deg,
-    var(--rim) 344deg,
-    #ffffff 352deg,
-    var(--rim) 356deg,
-    transparent 360deg);
-  /* additive over the static border, not instead of it — the outline stays a
-     full outline at every point in the cycle and simply brightens in one
-     place. Painted opaquely it would read as a segment chasing a gap. */
-  mix-blend-mode:plus-lighter;
-  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;
-  mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite:exclude;
-  animation:rim-turn 6s linear infinite;
-  pointer-events:none;
-}
-@keyframes rim-turn{ to{ --rim-a:360deg } }
-
-@media (prefers-reduced-motion: reduce){
-  .cta-glare, .rim{ display:none }
-}
+@media (prefers-reduced-motion: reduce){ .cta-shine{ display:none } }
