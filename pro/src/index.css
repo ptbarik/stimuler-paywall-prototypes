@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ── fonts ──────────────────────────────────────────────────────────
+   Four families, all four used by the export: Inter Display for the body and
+   the benefit rows, Urbanist for the headline, the CTA and the plan cards,
+   Poppins for the gold eyebrow and the testimonial quotes, Geist for the FAQ
+   chip. Urbanist is the variable face, so 400/500/600/700 all come from one
+   file — the export uses every one of them. */
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url('/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url('/fonts/poppins-700.woff2') format('woff2')}
+@font-face{font-family:'Geist';font-weight:500;font-display:swap;src:url('/fonts/geist.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-weight:200 800;font-display:swap;src:url('/fonts/manrope.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:400 700;font-display:swap;src:url('/fonts/urbanist-var.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-style:italic;font-display:swap;src:url('/fonts/urbanist-700i.woff2') format('woff2')}
+
+:root{
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --ur:'Urbanist',system-ui,-apple-system,sans-serif;
+  --pp:'Poppins',system-ui,-apple-system,sans-serif;
+  --gt:'Geist',system-ui,-apple-system,sans-serif;
+  --mr:'Manrope',system-ui,-apple-system,sans-serif;
+  /* the scenes' own body face — they were built against this name */
+  --font-card:'Poppins',system-ui,-apple-system,sans-serif;
+
+  /* the gold, from the PRO pill: 85.77° off the export, used again on the
+     eyebrow, the headline, the claim and the plan borders */
+  --gold-a:#EAB259; --gold-b:#FFE292;
+  --rule:linear-gradient(90deg,rgba(111,145,255,0) 0%,rgba(111,145,255,.7) 51%,rgba(111,145,255,0) 100%);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  background:#07060C;color:#fff;font-family:var(--id);
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ── stage ──────────────────────────────────────────────────────────
+   The 412×892 frame cannot reflow, so it is zoomed to the window. `zoom`
+   rather than `transform:scale()`: a scaled frame keeps its untransformed
+   layout box, so the pinned status bar and price sheet land in the wrong
+   place at every window height that isn't exactly 892. */
+.stage{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.frame{
+  position:relative;width:412px;height:915px;overflow:hidden;border-radius:26px;
+  background:linear-gradient(180deg,#16122A 0%,#120F22 60.1%,#0D0B16 100%);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.page{position:relative;width:412px}
+
+/* ── the three background gradients, as the export blurs them ───────*/
+.glows{position:absolute;left:0;top:0;width:412px;height:386px;pointer-events:none;overflow:visible}
+.glows i{position:absolute;display:block;border-radius:50%}
+.g1{width:516.69px;height:230.56px;left:-18.55px;top:28.22px;background:rgba(59,54,140,.35);filter:blur(145.277px)}
+.g2{width:336.32px;height:230.56px;left:262.91px;top:145.12px;background:rgba(59,54,140,.12);mix-blend-mode:plus-lighter;filter:blur(48.4256px)}
+.g3{width:302.65px;height:139.21px;left:285.91px;top:-10.1px;background:#3B368C;mix-blend-mode:plus-lighter;filter:blur(96.8512px);transform:rotate(-29.71deg)}
+
+/* ── status bar ─────────────────────────────────────────────────────
+   Chrome, not content: the page scrolls under it, so it is opaque black
+   exactly as the export draws it. */
+.status{position:absolute;left:0;top:0;width:412px;height:45px;background:#000;z-index:60;pointer-events:none}
+.status .time{position:absolute;left:32.58px;top:13.41px;width:51.75px;height:20.13px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--id);font-weight:600;font-size:15px;letter-spacing:.01em;color:#fff}
+.status img{position:absolute;display:block}
+.status .sig{right:76px;top:16.5px;width:17px}
+.status .wifi{right:56px;top:16.5px;width:16px}
+.status .bat{right:26px;top:16px;width:25px}
+
+/* ── close ──────────────────────────────────────────────────────────*/
+.close{position:absolute;left:21px;top:59px;width:24.64px;height:24.64px;border-radius:14.08px;
+  background:#151233;border:.154px solid #8F8F8F;display:grid;place-items:center;color:#8F8F8F;z-index:20}
+
+/* ── head column: brand, headline, hero, dots ───────────────────────*/
+.head{position:absolute;left:21px;top:91px;width:370px;display:flex;flex-direction:column;align-items:center;gap:29px}
+.brand{display:flex;align-items:center;gap:5px;height:32px}
+.brand .word{font-family:var(--id);font-weight:500;font-size:22px;line-height:32px;color:#fff}
+.brand .pill{width:58px;height:26px;border-radius:16.77px;display:grid;place-items:center;
+  background:linear-gradient(85.77deg,#EAB259 1.85%,#FFE292 49.31%,#EAB259 96.78%)}
+.brand .pill span{font-family:var(--id);font-weight:700;font-size:18px;line-height:18px;letter-spacing:-.02em;color:#654620;
+  transform:translateY(.5px)}
+
+.htitle{width:300px;height:54px;display:flex;align-items:center;text-align:center;justify-content:center;
+  font-family:var(--ur);font-weight:600;font-size:22px;line-height:27px;
+  background:linear-gradient(180deg,#FFF7C8 0%,#C68D40 118.52%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+
+/* the 370×330 slot the export leaves bare, and the four scenes in it */
+.heroslot{position:relative;width:370px;height:350px}
+.hero{position:absolute;left:0;top:0;width:370px;height:330px;border-radius:16px;overflow:hidden;touch-action:pan-y}
+.hero [data-panel] > *{background-color:transparent !important}
+
+.dots{position:absolute;left:50%;translate:-50%;top:344px;display:flex;align-items:center;gap:5px}
+.dots b{display:block;height:3px;border-radius:2px;background:#AABEFF;cursor:pointer;
+  transition:width .32s cubic-bezier(.2,.7,.2,1),background .32s linear}
+.dots b.on{background:#6F91FF}
+
+/* ── proof band ─────────────────────────────────────────────────────
+   569 wide in a 412 page: the neighbours are meant to be sliced by both
+   edges, which is the only thing that says the band moves. */
+.proof{position:absolute;left:50%;translate:-50%;top:597px;width:569px;height:145px;overflow:hidden}
+.ptrack{position:absolute;left:0;top:0;width:569px;height:145px}
+.pitem{position:absolute;display:flex;align-items:center;justify-content:center;gap:5px;width:219.66px;
+  transform-origin:50% 50%;will-change:transform,opacity}
+.pitem .lr{width:44px;flex:none;display:grid;place-items:center}
+.pitem .lr img{width:100%;display:block}
+.pitem .mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0}
+.pitem .eyebrow{font-family:var(--mr);font-weight:600;font-size:7.96px;line-height:86%;letter-spacing:.34em;color:#fff;white-space:nowrap}
+.pitem .big{font-family:var(--pp);font-weight:700;font-size:29.23px;line-height:25px;letter-spacing:-.02em;color:#fff;text-align:center;white-space:pre-line}
+.pitem .sub{font-family:var(--pp);font-weight:700;font-size:12.5px;line-height:15px;letter-spacing:-.02em;color:#fff;text-align:center;white-space:pre-line}
+.pitem .stars{display:block;margin-top:2px}
+
+/* ── premium benefits ───────────────────────────────────────────────
+   The swipeable card row, to the Paper frame's own numbers: a 412-wide
+   full-bleed section at 817 with 20px inner padding, a 340 column inside it,
+   and a 372 card viewport that starts at the column's left edge and runs past
+   the section's padding — which is what slices the third card. */
+.benefits{position:absolute;left:50%;translate:-50%;top:817px;width:412px;padding:34px 20px;
+  display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.bcol{width:340px;display:flex;flex-direction:column;align-items:flex-start;gap:22px}
+.bcol .eyebrow{font-family:var(--id);font-weight:500;font-size:11px;line-height:14px;letter-spacing:.2em;
+  background:linear-gradient(90deg,#B09A6E 0%,#FFF0C9 52%,#E6C88B 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.bcol h2{width:340px;font-family:var(--id);font-weight:700;font-size:32px;line-height:38px;letter-spacing:-.035em;
+  background:linear-gradient(90deg,#EAB259 0%,#FFE292 52%,#EAB259 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.bview{width:372px;height:186px;flex:none;display:flex;align-items:flex-start;gap:12px;
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-snap-type:x mandatory;touch-action:pan-x}
+.bview::-webkit-scrollbar{display:none}
+.bcard{width:150px;height:186px;flex:none;padding:18px 16px;border-radius:18px;scroll-snap-align:start;
+  background:#6F91FF0A;border:1px solid #FFFFFF12;
+  display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.bcard img{width:34px;height:34px;flex:none;object-fit:contain;filter:brightness(115%)}
+.bcard .tx{display:flex;flex-direction:column;width:118px;gap:6px}
+.bcard .t{font-family:var(--id);font-weight:600;font-size:14px;line-height:19px;letter-spacing:-.01em;color:#fff}
+.bcard .s{font-family:var(--id);font-weight:400;font-size:12px;line-height:17px;color:#FFFFFF8F}
+.brail{position:relative;width:150px;height:3px;flex:none;border-radius:999px;background:#FFFFFF1A}
+/* a fixed 44 that travels, as drawn — not a proportional thumb, which at four
+   cards in a 372 viewport would be twice this long */
+.brail i{position:absolute;left:0;top:0;width:44px;height:3px;border-radius:999px;
+  background:linear-gradient(90deg,#EAB259 0%,#FFE292 100%);
+  transition:transform .18s linear}
+
+/* ── section chips ──────────────────────────────────────────────────*/
+.chip{display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 16px;border-radius:10px;
+  border:1px solid rgba(111,145,255,.55);box-shadow:0 -2px 12.68px rgba(0,0,0,.2)}
+.chip.learn{background:#120E22}
+.chip.faq{background:#0F0D25}
+.chip span{font-family:var(--id);font-weight:500;font-size:14px;line-height:1;color:#fff}
+.chip.faq span{font-family:var(--gt);font-size:13.73px}
+
+/* ── learners ───────────────────────────────────────────────────────*/
+.learners{position:absolute;left:26px;top:1266px;width:360.02px;display:flex;flex-direction:column;align-items:flex-start;gap:21px}
+.claimrow{position:relative;width:341.16px;height:170.9px}
+.claimrow .tro{position:absolute;left:19.4px;top:20.85px;width:150.05px;height:150.05px}
+.claimrow .tro img{width:100%;height:100%;object-fit:contain}
+.claim{position:absolute;left:183px;top:38px;width:141px;text-align:right;
+  font-family:var(--id);font-weight:700;letter-spacing:-.02em;
+  background:linear-gradient(130.38deg,#FFF9EC 10.73%,#FCD885 54.07%,#B97A1E 120.01%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.claim .fig{display:block;font-size:43.38px;line-height:51px}
+.claim .ln{display:block;font-size:21px;line-height:26px}
+
+/* the testimonial row scrolls sideways; the second card is meant to peek */
+.trow{width:360.02px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+  display:flex;gap:11.76px;padding-right:26px;scroll-snap-type:x mandatory}
+.trow::-webkit-scrollbar{display:none}
+.tcard{position:relative;flex:none;width:294.12px;height:372.56px;border-radius:16px;scroll-snap-align:start;
+  background:radial-gradient(85.34% 126.95% at 85.34% 76.09%,rgba(111,145,255,.074) 0%,rgba(111,145,255,.09) 100%);
+  box-shadow:0 -2px 12.68px rgba(0,0,0,.2)}
+.tcard .ph{position:absolute;left:88.24px;top:27.42px;width:117.65px;height:117.65px;border-radius:13.45px;
+  border:2.94px solid rgba(99,77,51,.42);overflow:hidden}
+.tcard .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.tcard .body{position:absolute;left:24.77px;top:165.66px;width:244.59px;display:flex;flex-direction:column;align-items:center;gap:18.63px}
+.tcard .q{width:244.59px;font-family:var(--pp);font-weight:600;font-size:15.69px;line-height:25px;text-align:center;color:#D4D4D4}
+.tcard .who{width:175px;text-align:center}
+.tcard .nm{display:block;font-family:var(--ur);font-style:italic;font-weight:700;font-size:19.61px;line-height:31px;color:#6F64FE}
+.tcard .ro{display:block;font-family:var(--ur);font-style:italic;font-weight:700;font-size:11.76px;line-height:20px;color:#FFBE4D}
+
+/* ── faq ────────────────────────────────────────────────────────────*/
+.faqblock{position:absolute;left:50%;translate:-50%;top:1922px;width:335px;display:flex;flex-direction:column;align-items:flex-start;gap:36px}
+.faqlist{width:317.79px;display:flex;flex-direction:column;gap:11.17px}
+.fq{width:316.82px;cursor:pointer}
+.fq .r{display:flex;align-items:flex-start;justify-content:space-between;gap:11.03px;min-height:29.41px}
+.fq p{width:246px;font-family:var(--id);font-weight:400;font-size:14px;line-height:20px;color:#fff}
+.fq .cv{flex:none;width:29.41px;height:29.41px;display:grid;place-items:center;color:#fff;
+  transition:transform .28s cubic-bezier(.2,.7,.2,1)}
+.fq.open .cv{transform:rotate(180deg)}
+.ans{overflow:hidden;transition:height .3s cubic-bezier(.2,.7,.2,1)}
+.ans p{width:290px;padding-top:8px;font-family:var(--id);font-weight:400;font-size:13px;line-height:20px;color:rgba(255,255,255,.62)}
+.fqr{width:300.4px;height:1px;margin-left:17.38px;background:var(--rule)}
+
+/* ── the pinned price sheet ─────────────────────────────────────────*/
+.sheet{position:absolute;left:0;bottom:0;width:412px;height:358px;z-index:50;
+  border-radius:24px 24px 0 0;overflow:hidden;
+  background:linear-gradient(180deg,rgba(19,10,4,.2) 0%,rgba(19,18,18,.2) 100%),rgba(0,0,0,.72);
+  backdrop-filter:blur(10px)}
+.sheetin{position:absolute;left:25.05px;top:47.12px;width:360.48px}
+.plans{position:relative;width:360.48px;height:167.75px}
+.plan{position:absolute;top:13.67px;width:166.1px;height:154.08px;border-radius:16.82px;
+  border:1.05px solid #F6CC78;cursor:pointer;
+  transition:background .26s cubic-bezier(0,0,.2,1),border-color .26s cubic-bezier(0,0,.2,1),box-shadow .26s}
+.plan.y{left:0}
+.plan.m{left:190.1px}
+.plan.off{background:#050504;border-color:rgba(246,204,120,.45)}
+.plan.on{background:#392C18;border-color:#F6CC78;box-shadow:0 0 0 1px rgba(246,204,120,.25)}
+.badge{position:absolute;left:33px;top:0;height:26.82px;display:flex;align-items:center;padding:0 16.82px;border-radius:6.31px;
+  background:linear-gradient(90deg,#E09B6D 0%,#C17C1D 99.56%);
+  font-family:var(--ur);font-weight:700;font-size:14.72px;line-height:18px;color:#fff;z-index:2}
+.plan .lab{position:absolute;left:12.62px;top:33.89px;font-family:var(--ur);font-weight:700;font-size:18.92px;line-height:36px;
+  background:linear-gradient(180deg,rgba(255,255,255,.85) 0%,rgba(183,183,183,.85) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;white-space:nowrap}
+.plan .price{position:absolute;left:12.62px;top:78px;display:flex;align-items:baseline;font-family:var(--ur);color:#fff}
+.plan .cur{font-weight:600;font-size:22px;line-height:34px}
+.plan .fig{font-weight:700;font-size:34px;line-height:34px;letter-spacing:-.01em}
+.plan .per{font-weight:500;font-size:17px;line-height:34px}
+.plan .note{position:absolute;left:12.62px;top:117px;font-family:var(--ur);font-weight:600;font-size:12.62px;line-height:15px;color:#fff;white-space:nowrap}
+.plan.m .price,.plan.m .note{color:rgba(255,255,255,.85)}
+.plan.m .fig{text-shadow:0 0 27px rgba(255,255,255,.37)}
+
+.cta{position:relative;margin-top:32px;width:360.48px;height:68px;border-radius:22.5px;overflow:hidden;
+  display:grid;place-items:center;
+  background:radial-gradient(47.19% 94.72% at 52.81% 50%,#FFDF90 0%,#B3782B 100%)}
+.cta span{font-family:var(--ur);font-weight:700;font-size:20px;line-height:36px;color:#312A1B}
+
+/* ── prototype controls, outside the phone ─────────────────────────*/
+.rail{display:flex;align-items:center;gap:10px;font-family:var(--id);font-size:12px;color:#8B86A6}
+.rail button{padding:6px 12px;border-radius:999px;border:1px solid #2A2740;color:#CFCADF}
+.rail button:hover{border-color:#4A4468;color:#fff}
+.rail input[type=range]{width:220px;accent-color:#6F64FE}

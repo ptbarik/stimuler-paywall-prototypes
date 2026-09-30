@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+/* The Learn screen is set in Urbanist, with Red Hat Display on the roadmap
+   node numerals and Quicksand on the streak count — the three families the
+   frame actually uses. The eleven floating actions are set in Inter Display,
+   which is what the FAB sheet was drawn in and what the other Stimuler
+   paywall prototypes carry, so the button reads as the paywall arriving on
+   the Learn screen rather than as part of it. */
+@font-face{font-family:'Urbanist';font-weight:400;font-display:swap;src:url('/fonts/urbanist-400.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:500;font-display:swap;src:url('/fonts/urbanist-500.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:600;font-display:swap;src:url('/fonts/urbanist-600.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-display:swap;src:url('/fonts/urbanist-700.woff2') format('woff2')}
+@font-face{font-family:'Red Hat Display';font-weight:600;font-display:swap;src:url('/fonts/redhatdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Quicksand';font-weight:700;font-display:swap;src:url('/fonts/quicksand-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+
+:root{
+  --ub:'Urbanist',system-ui,-apple-system,sans-serif;
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --rhd:'Red Hat Display',system-ui,sans-serif;
+  --qs:'Quicksand',system-ui,sans-serif;
+}
+
+*{ -webkit-tap-highlight-color:transparent }
+html,body{ margin:0; background:#08070C; }
+body{ font-family:var(--id); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
+button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; color:inherit }
+
+.font-ub{ font-family:var(--ub) }
+.font-id{ font-family:var(--id) }
+.font-rhd{ font-family:var(--rhd) }
+.font-qs{ font-family:var(--qs) }
+.tnum{ font-feature-settings:'tnum'; font-variant-numeric:tabular-nums }
+
+/* the phone scrolls; it does not advertise that it scrolls */
+.no-bar{ scrollbar-width:none; -ms-overflow-style:none }
+.no-bar::-webkit-scrollbar{ display:none; width:0; height:0 }
+
+/* ══ one light, one cycle ══════════════════════════════════════════
+   6s. The wash across the tab and the glint on its border are the
+   *same* travelling band — same width, same starting x, these same
+   keyframes, the same 14° skew — so the stretch of edge that lights is
+   always the stretch the wash is crossing. Two separate animations is
+   what makes a border read as a second, louder event. */
+@keyframes light-wipe{
+  0%   { transform:translateX(-220px) skewX(-14deg) }
+  20%  { transform:translateX(-220px) skewX(-14deg) }
+  50%  { transform:translateX(480px)  skewX(-14deg) }
+  100% { transform:translateX(480px)  skewX(-14deg) }
+}
+.light-wipe{ animation:light-wipe 6s cubic-bezier(.37,0,.4,1) infinite }
+
+/* ── the stars ───────────────────────────────────────────────────
+   A twinkle is not a pulse: it brightens fast, half-collapses, comes
+   back smaller, and only then goes out. Four stops rather than two, and
+   a couple of degrees of turn so the points catch differently each
+   time. Each star carries its own delay so they never blink together —
+   two stars in lockstep read as a loading indicator. */
+@keyframes twinkle{
+  0%   { transform:scale(.62) rotate(-10deg); opacity:.30 }
+  18%  { transform:scale(1.24) rotate(2deg);  opacity:1 }
+  34%  { transform:scale(.82) rotate(8deg);   opacity:.52 }
+  52%  { transform:scale(1.08) rotate(3deg);  opacity:.9 }
+  74%  { transform:scale(.7) rotate(-6deg);   opacity:.34 }
+  100% { transform:scale(.62) rotate(-10deg); opacity:.30 }
+}
+.twinkle{ animation:twinkle 2.9s cubic-bezier(.35,0,.4,1) infinite; transform-origin:50% 50% }
+
+.frozen *{ animation-play-state:paused !important }
+
+.half-speed .light-wipe{ animation-duration:12s }
+.half-speed .twinkle{ animation-duration:5.8s }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important }
+}

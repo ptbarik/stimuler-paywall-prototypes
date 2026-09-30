@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* The Learn screen is set in Urbanist, with Red Hat Display on the roadmap
+   node numerals and Quicksand on the streak count — the three families the
+   frame actually uses. The eleven floating actions are set in Inter Display,
+   which is what the FAB sheet was drawn in and what the other Stimuler
+   paywall prototypes carry, so the button reads as the paywall arriving on
+   the Learn screen rather than as part of it. */
+@font-face{font-family:'Urbanist';font-weight:400;font-display:swap;src:url('/fonts/urbanist-400.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:500;font-display:swap;src:url('/fonts/urbanist-500.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:600;font-display:swap;src:url('/fonts/urbanist-600.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-display:swap;src:url('/fonts/urbanist-700.woff2') format('woff2')}
+@font-face{font-family:'Red Hat Display';font-weight:600;font-display:swap;src:url('/fonts/redhatdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Quicksand';font-weight:700;font-display:swap;src:url('/fonts/quicksand-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+
+:root{
+  --ub:'Urbanist',system-ui,-apple-system,sans-serif;
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --rhd:'Red Hat Display',system-ui,sans-serif;
+  --qs:'Quicksand',system-ui,sans-serif;
+}
+
+*{ -webkit-tap-highlight-color:transparent }
+html,body{ margin:0; background:#08070C; }
+body{ font-family:var(--id); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
+button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; color:inherit }
+
+.font-ub{ font-family:var(--ub) }
+.font-id{ font-family:var(--id) }
+.font-rhd{ font-family:var(--rhd) }
+.font-qs{ font-family:var(--qs) }
+.tnum{ font-feature-settings:'tnum'; font-variant-numeric:tabular-nums }
+
+/* the phone scrolls; it does not advertise that it scrolls */
+.no-bar{ scrollbar-width:none; -ms-overflow-style:none }
+.no-bar::-webkit-scrollbar{ display:none; width:0; height:0 }
+
+/* ── N4's shine sweep ─────────────────────────────────────────────
+   A 40px band crossing the action at 22°, parked off the left edge for
+   most of the cycle: 1.15s to cross, 3.6s of nothing, 4.75s in total.
+   A keyframe rather than a spring because it is ambient — it reacts to
+   nothing, and driving it from React would re-render the frame sixty
+   times a second for a decoration. */
+@keyframes fab-shine{
+  0%    { transform:translateX(-60px) skewX(-22deg) }
+  24.2% { transform:translateX(200px) skewX(-22deg) }
+  100%  { transform:translateX(200px) skewX(-22deg) }
+}
+.fab-shine{
+  position:absolute; top:-18px; width:40px; height:88px; left:0;
+  background:linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.62) 50%, rgba(255,255,255,0) 100%);
+  animation:fab-shine 4.75s cubic-bezier(.4,0,.3,1) infinite;
+  pointer-events:none;
+}
+
+/* A5's ring — one pulse out of the avatar every 8s, 380ms of travel and
+   then nothing, because a ring that pulses continuously is a loading
+   spinner and this one is a person tapping you on the shoulder. */
+@keyframes fab-ring{
+  0%   { transform:scale(.86); opacity:0 }
+  6%   { transform:scale(1);   opacity:.9 }
+  16%  { transform:scale(1.4); opacity:0 }
+  100% { transform:scale(1.4); opacity:0 }
+}
+.fab-ring{ animation:fab-ring 8s cubic-bezier(.2,.7,.3,1) infinite }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important }
+  .fab-shine{ display:none }
+  .fab-ring{ display:none }
+}

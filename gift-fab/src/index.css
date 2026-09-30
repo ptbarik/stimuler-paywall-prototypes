@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* The Learn screen is set in Urbanist, with Red Hat Display on the roadmap
+   node numerals and Quicksand on the streak count — the three families the
+   frame actually uses. The eleven floating actions are set in Inter Display,
+   which is what the FAB sheet was drawn in and what the other Stimuler
+   paywall prototypes carry, so the button reads as the paywall arriving on
+   the Learn screen rather than as part of it. */
+@font-face{font-family:'Urbanist';font-weight:400;font-display:swap;src:url('/fonts/urbanist-400.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:500;font-display:swap;src:url('/fonts/urbanist-500.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:600;font-display:swap;src:url('/fonts/urbanist-600.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:700;font-display:swap;src:url('/fonts/urbanist-700.woff2') format('woff2')}
+@font-face{font-family:'Red Hat Display';font-weight:600;font-display:swap;src:url('/fonts/redhatdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Quicksand';font-weight:700;font-display:swap;src:url('/fonts/quicksand-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+
+:root{
+  --ub:'Urbanist',system-ui,-apple-system,sans-serif;
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --rhd:'Red Hat Display',system-ui,sans-serif;
+  --qs:'Quicksand',system-ui,sans-serif;
+}
+
+*{ -webkit-tap-highlight-color:transparent }
+html,body{ margin:0; background:#08070C; }
+body{ font-family:var(--id); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale }
+button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; color:inherit }
+
+.font-ub{ font-family:var(--ub) }
+.font-id{ font-family:var(--id) }
+.font-rhd{ font-family:var(--rhd) }
+.font-qs{ font-family:var(--qs) }
+.tnum{ font-feature-settings:'tnum'; font-variant-numeric:tabular-nums }
+
+/* the phone scrolls; it does not advertise that it scrolls */
+.no-bar{ scrollbar-width:none; -ms-overflow-style:none }
+.no-bar::-webkit-scrollbar{ display:none; width:0; height:0 }
+
+/* ══ the gift's motion ═════════════════════════════════════════════
+   One 4.2s cycle for every variant, and the three things that can
+   happen in it never happen at the same time:
+
+     0.00 – 1.18s   the box rattles, and on the pop-out variants the
+                    ribbons swing after it
+     1.20 – 3.13s   the pane's own highlight runs — a border chase on
+                    seven of them, a glare across the gold paper on the
+                    ticket
+     3.13 – 4.20s   nothing at all
+
+   The pause is the point. A gift that shakes without stopping is a
+   loading spinner; a gift that shakes, stops, catches the light and
+   then waits is something asking to be opened. */
+
+/* ── the rattle ──────────────────────────────────────────────────
+   It rocks on its base, not around its middle — the pivot is the
+   bottom centre, so the box tips like an object on a surface rather
+   than spinning like a sticker. Six diminishing swings, then still. */
+@keyframes gift-rattle{
+  0%    { transform:rotate(0deg)     translateY(0) }
+  4%    { transform:rotate(-7deg)    translateY(-1px) }
+  9%    { transform:rotate(6deg)     translateY(-2.5px) }
+  14%   { transform:rotate(-4.6deg)  translateY(-1px) }
+  19%   { transform:rotate(3.2deg)   translateY(-1.5px) }
+  24%   { transform:rotate(-1.7deg)  translateY(0) }
+  28%   { transform:rotate(0deg)     translateY(0) }
+  100%  { transform:rotate(0deg)     translateY(0) }
+}
+.gift-rattle{ animation:gift-rattle 4.2s cubic-bezier(.36,.07,.19,.97) infinite; transform-origin:50% 92% }
+
+/* ── the ribbons ─────────────────────────────────────────────────
+   Only on the variants where the box breaks the top edge of the pill,
+   because that is the only place there is room for them to move into.
+   They lag the box by a beat and throw further than it does — an ear
+   that moves *with* the head reads as one rigid object, an ear that
+   arrives late reads as an ear. */
+@keyframes ear-l{
+  0%   { transform:rotate(0deg) scale(1) }
+  8%   { transform:rotate(-15deg) scale(1.06) }
+  15%  { transform:rotate(10deg)  scale(1.02) }
+  22%  { transform:rotate(-7deg)  scale(1.04) }
+  29%  { transform:rotate(4deg)   scale(1) }
+  36%  { transform:rotate(0deg)   scale(1) }
+  100% { transform:rotate(0deg)   scale(1) }
+}
+@keyframes ear-r{
+  0%   { transform:rotate(0deg) scale(1) }
+  8%   { transform:rotate(15deg)  scale(1.06) }
+  15%  { transform:rotate(-10deg) scale(1.02) }
+  22%  { transform:rotate(7deg)   scale(1.04) }
+  29%  { transform:rotate(-4deg)  scale(1) }
+  36%  { transform:rotate(0deg)   scale(1) }
+  100% { transform:rotate(0deg)   scale(1) }
+}
+.ear-l,.ear-r{ transform-box:view-box; animation-duration:4.2s; animation-timing-function:cubic-bezier(.36,.07,.19,.97); animation-iteration-count:infinite; animation-delay:.07s }
+.ear-l{ animation-name:ear-l }
+.ear-r{ animation-name:ear-r }
+
+/* ── the border chase ────────────────────────────────────────────
+   One lit segment travelling the pill's own outline once per cycle,
+   starting the instant the box goes still. Every path carries
+   pathLength="1000", so the same dash numbers work on a rounded
+   rectangle and on a ticket's die-cut edge without measuring either. */
+@keyframes border-run{
+  0%   { stroke-dashoffset:0;     opacity:0 }
+  7%   { opacity:1 }
+  38%  { opacity:1 }
+  46%  { stroke-dashoffset:-1000; opacity:0 }
+  100% { stroke-dashoffset:-1000; opacity:0 }
+}
+/* `backwards` matters: without it the stroke sits fully drawn and fully
+   opaque for the 1.2s before the animation starts, which puts a static gold
+   line on the pill during the rattle — the one moment it must not be there. */
+.border-run{ animation:border-run 4.2s cubic-bezier(.4,0,.5,1) infinite both; animation-delay:1.2s }
+
+/* ── the glare ───────────────────────────────────────────────────
+   The ticket is the one variant already made of gold, so it gets a
+   sweep across the paper instead of a line around the edge — a border
+   chase on a gold field would be a gold line on gold. It is clipped to
+   the die-cut, kept under half opacity, and it starts 1.6s in, well
+   clear of the rattle. */
+@keyframes ticket-glare{
+  0%   { transform:translateX(-150px) skewX(-20deg) }
+  26%  { transform:translateX(470px)  skewX(-20deg) }
+  100% { transform:translateX(470px)  skewX(-20deg) }
+}
+.ticket-glare{ animation:ticket-glare 4.2s cubic-bezier(.42,0,.3,1) infinite both; animation-delay:1.6s }
+
+/* held still while the panel's animation switch is off */
+.frozen *{ animation-play-state:paused !important }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important }
+}
+
+/* half speed — one multiplier on the whole frame, so the rattle, the ribbons
+   and the highlight keep their relationship to each other while you read them */
+.half-speed .gift-rattle,
+.half-speed .ear-l,
+.half-speed .ear-r,
+.half-speed .border-run,
+.half-speed .ticket-glare{ animation-duration:8.4s }
+.half-speed .border-run{ animation-delay:2.4s }
+.half-speed .ticket-glare{ animation-delay:3.2s }
+.half-speed .ear-l,
+.half-speed .ear-r{ animation-delay:.14s }

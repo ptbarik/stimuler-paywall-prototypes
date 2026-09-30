@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url('/fonts/poppins-600.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:400 700;font-display:swap;src:url('/fonts/urbanist-var.woff2') format('woff2')}
+
+:root{
+  --id:'Inter Display',system-ui,-apple-system,sans-serif;
+  --pp:'Poppins',system-ui,-apple-system,sans-serif;
+  --ur:'Urbanist',system-ui,-apple-system,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  background:#07060C;color:#fff;font-family:var(--id);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow:hidden;
+}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:rgba(255,255,255,.14)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;margin-top:-5px;border-radius:50%;background:#fff}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:rgba(255,255,255,.14)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:50%;background:#fff}
+
+.no-bar{scrollbar-width:none;-ms-overflow-style:none}
+.no-bar::-webkit-scrollbar{display:none;width:0;height:0}
+
+/* the CTA's glare — the export's own bar, swept */
+@keyframes cta-glare{
+  0%   { transform:translateX(-110px) rotate(45deg) }
+  24%  { transform:translateX(430px)  rotate(45deg) }
+  100% { transform:translateX(430px)  rotate(45deg) }
+}
+.cta-glare.sweep{ animation:cta-glare 4.6s cubic-bezier(.4,0,.35,1) infinite }

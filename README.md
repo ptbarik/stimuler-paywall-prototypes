@@ -11,15 +11,20 @@ two can be put side by side and compared.
 | [`iteration-b/`](iteration-b) | tier toggle **in the header** | https://stimuler-paywall-carousel-b.vercel.app |
 | [`roadmap/`](roadmap) | the roadmap paywall — one animation, one toggle | https://stimuler-roadmap-paywall.vercel.app |
 | [`premium/`](premium) | **the Premium tab flow** — nav → crown interstitial → paywall | https://stimuler-premium-tab.vercel.app |
-| [`fab/`](fab) | **the offer block, two ways** — coupon ticket vs starburst badge | https://stimuler-paywall-offer.vercel.app |
+| [`fab/`](fab) | **the offer block** — starburst badge, US market (Pro/Pro+ toggle) and Indian market (PRO only, FREE vs PRO); `?m=in` opens India | https://stimuler-paywall-offer.vercel.app |
+| [`india/`](india) | **the Indian PRO paywall** — India only, purple vs gold theme; `?theme=gold` opens gold | https://stimuler-paywall-india.vercel.app |
+| [`india-flow/`](india-flow) | **India double paywall, end to end** — first paywall (stimuler-pro-paywall-v2) → × → gift → 50% offer paywall, purple vs gold, with sound + haptics; `?theme=gold`, `?step=gift` / `?step=offer` | https://stimuler-india-gift-flow.vercel.app |
+| [`pro/`](pro) | **Stimuler PRO v1** — the first V3 node built live, with the four feature animations in its hero | https://stimuler-pro-paywall.vercel.app |
+| [`pro-v2`](https://github.com/ptbarik/stimuler-pro-paywall) (own repo) | **Stimuler PRO v2** — benefits above the proof band, rebuilt price sheet, tab bar; `?y=1300` opens it scrolled | https://stimuler-pro-paywall-v2.vercel.app |
 | [`coupon-v3/`](coupon-v3) | **Stimuler V3 — the coupon paywall** — bold switch, glare CTA, running rim | https://stimuler-coupon-v3.vercel.app |
 | [`learn-fab/`](learn-fab) | **the Learn screen's floating action, eleven ways** | https://stimuler-learn-fab.vercel.app |
 | [`gift-fab/`](gift-fab) | **the gift, animated** — eight revised FABs with their motion built | https://stimuler-gift-fab.vercel.app |
 | [`gift-open/`](gift-open) | **tap the gift → the coupon paywall** — four screens, opening | https://stimuler-gift-open.vercel.app |
 | [`fab-shine/`](fab-shine) | **seven FAB tabs, shining** — one light, stars twinkling | https://stimuler-fab-shine.vercel.app |
+| [`glass-card/`](glass-card) | **the price sheet, as glass** — Figma's Glass panel rebuilt with a displacement map, over content you can move | https://stimuler-glass-card.vercel.app |
 
 ```bash
-cd fab-shine          # or gift-open, gift-fab, learn-fab, fab, premium, iteration-a, iteration-b, roadmap
+cd fab-shine          # or india-flow, india, gift-open, gift-fab, learn-fab, fab, premium, iteration-a, iteration-b, roadmap
 npm install
 npm run dev           # http://localhost:5173
 ```
