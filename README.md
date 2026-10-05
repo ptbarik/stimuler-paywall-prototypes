@@ -21,6 +21,7 @@ two can be put side by side and compared.
 | [`gift-fab/`](gift-fab) | **the gift, animated** — eight revised FABs with their motion built | https://stimuler-gift-fab.vercel.app |
 | [`gift-open/`](gift-open) | **tap the gift → the coupon paywall** — four screens, opening | https://stimuler-gift-open.vercel.app |
 | [`fab-shine/`](fab-shine) | **seven FAB tabs, shining** — one light, stars twinkling | https://stimuler-fab-shine.vercel.app |
+| [`starburst-fab/`](starburst-fab) | **the FAB, four ways it opens** — a seal, a reel, a tag, a rail; the offer completes as the tab opens | https://stimuler-starburst-fab.vercel.app |
 | [`glass-card/`](glass-card) | **the price sheet, as glass** — Figma's Glass panel rebuilt with a displacement map, over content you can move | https://stimuler-glass-card.vercel.app |
 
 ```bash
