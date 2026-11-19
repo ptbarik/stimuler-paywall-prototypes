@@ -24,7 +24,7 @@ import { BG_V2, BG_GLOW_V2, EASE, STILL } from './theme.js'
 const BOARD = {
   v1: { h: 3406, shift: 14, countdown: 352, headline: 412, carousel: 460,
         benefits: 598, timeline: 1107, learners: 1560, compare: 2229, faq: 2648 },
-  v2: { h: 3237, shift: 12, countdown: 75, headline: 370, carousel: 452,
+  v2: { h: 3237, shift: 12, countdown: 75, headline: 370, carousel: 440,
         benefits: 592, timeline: 980, learners: 1433, compare: 2095, faq: 2554 },
 }
 
