@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@font-face{font-family:'Inter Display';font-weight:400;font-display:swap;src:url('/fonts/interdisplay-400.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:500;font-display:swap;src:url('/fonts/interdisplay-500.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:600;font-display:swap;src:url('/fonts/interdisplay-600.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-weight:700;font-display:swap;src:url('/fonts/interdisplay-700.woff2') format('woff2')}
+@font-face{font-family:'Inter Display';font-style:italic;font-weight:700;font-display:block;src:url('/fonts/interdisplay-700i.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url('/fonts/poppins-400.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-weight:100 900;font-display:swap;src:url('/fonts/urbanist-var.woff2') format('woff2')}
+@font-face{font-family:'Urbanist';font-style:italic;font-weight:700;font-display:swap;src:url('/fonts/urbanist-700i.woff2') format('woff2')}
+@font-face{font-family:'Geist';font-weight:400 600;font-display:swap;src:url('/fonts/geist.woff2') format('woff2')}
+@font-face{font-family:'Manrope';font-weight:400 800;font-display:swap;src:url('/fonts/manrope.woff2') format('woff2')}
+@font-face{font-family:'Geist Mono';font-weight:600;font-display:swap;src:url('/fonts/geistmono-600.woff2') format('woff2')}
+
+*{ -webkit-tap-highlight-color:transparent; box-sizing:border-box }
+html,body{ margin:0; background:#07060D }
+body{
+  font-family:'Inter Display',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  color:#F5F4FA;
+}
+button{ background:none; border:0; padding:0; font:inherit; cursor:pointer; color:inherit }
+h1{ font-weight:700 }
+
+.no-bar{ scrollbar-width:none; -ms-overflow-style:none }
+.no-bar::-webkit-scrollbar{ display:none; width:0; height:0 }

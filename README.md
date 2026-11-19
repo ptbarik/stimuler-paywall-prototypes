@@ -14,6 +14,11 @@ two can be put side by side and compared.
 | [`fab/`](fab) | **the offer block** — starburst badge, US market (Pro/Pro+ toggle) and Indian market (PRO only, FREE vs PRO); `?m=in` opens India | https://stimuler-paywall-offer.vercel.app |
 | [`india/`](india) | **the Indian PRO paywall** — India only, purple vs gold theme; `?theme=gold` opens gold | https://stimuler-paywall-india.vercel.app |
 | [`india-flow/`](india-flow) | **India double paywall, end to end** — first paywall (stimuler-pro-paywall-v2) → × → gift → 50% offer paywall, purple vs gold, with sound + haptics; `?theme=gold`, `?step=gift` / `?step=offer` | https://stimuler-india-gift-flow.vercel.app |
+| [`mithai-flow/`](mithai-flow) | **India Diwali double paywall** — the same first paywall → × → a mithai box that rattles, opens with confetti and shrinks into the Diwali offer paywall (Paper); ruby red vs gold; `?theme=gold`, `?step=box` / `?step=offer` | https://stimuler-india-mithai-flow.vercel.app |
+| [`xmas-flow/`](xmas-flow) | **Christmas double paywall** — the first paywall (card-sway) with snow that settles on the card, can be knocked off and blows away → × → a blizzard, a cold room with a stone fireplace, **tap to light the fire**, and the botanical wreath over the mantel holding 50% off rises alone into the offer paywall; `?step=mid` / `?step=offer` | https://stimuler-xmas-paywall.vercel.app |
+| [`black-friday/`](black-friday) | **Black Friday double paywall** — a gold slot machine on the reveal screen, tap anywhere, the reels spin to 50% and the offer paywall rises behind a die-cut BLACK FRIDAY banner; `?at=paywall` skips the reveal, `?lights=1` lights the banner's marquee bulbs, `?v=2` is the chosen design — silver machine with no lever, indigo body, benefits as a four-row list | https://black-friday-wine.vercel.app |
+| [`app-open/`](app-open) | **App Open paywall** — the envelope rattles, the 50% ticket pops out; fits any window, full-screen on a phone | https://stimuler-app-open-paywall.vercel.app |
+| [`card-sway/`](card-sway) | **PRO paywall, gyro gold card** — Paper Paywalls 2.0 → PRO; the card tilts in 3D with its glow, the contour lines ripple out | https://stimuler-card-sway-paywall.vercel.app |
 | [`pro/`](pro) | **Stimuler PRO v1** — the first V3 node built live, with the four feature animations in its hero | https://stimuler-pro-paywall.vercel.app |
 | [`pro-v2`](https://github.com/ptbarik/stimuler-pro-paywall) (own repo) | **Stimuler PRO v2** — benefits above the proof band, rebuilt price sheet, tab bar; `?y=1300` opens it scrolled | https://stimuler-pro-paywall-v2.vercel.app |
 | [`coupon-v3/`](coupon-v3) | **Stimuler V3 — the coupon paywall** — bold switch, glare CTA, running rim | https://stimuler-coupon-v3.vercel.app |
@@ -25,7 +30,7 @@ two can be put side by side and compared.
 | [`glass-card/`](glass-card) | **the price sheet, as glass** — Figma's Glass panel rebuilt with a displacement map, over content you can move | https://stimuler-glass-card.vercel.app |
 
 ```bash
-cd fab-shine          # or india-flow, india, gift-open, gift-fab, learn-fab, fab, premium, iteration-a, iteration-b, roadmap
+cd fab-shine          # or app-open, mithai-flow, india-flow, india, gift-open, gift-fab, learn-fab, fab, premium, iteration-a, iteration-b, roadmap
 npm install
 npm run dev           # http://localhost:5173
 ```
